@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import {Text, View, TextInput} from 'react-native';
+import {Text, View} from 'react-native';
+import {Input} from 'native-base';
 
 export default class UsernameField extends Component {
 
   render() {
     return (
-        <TextInput
+        <Input
             name={"username"}
-            value="Default"
+            placeholder="Username"
         />
     );
   }

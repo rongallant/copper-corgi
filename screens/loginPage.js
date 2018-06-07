@@ -1,23 +1,35 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import UsernameField from '../components/usernameField';
-import { Card, Button } from 'react-native-material-design';
+import {
+  Body,
+  Container,
+  Card,
+  CardItem,
+  Header,
+  Content,
+  Text,
+  Button
+} from 'native-base';
 
 export default class LoginPage extends Component {
 
   render() {
     return (
-        <View style={styles.container}>
-          <Card>
-            <Card.Body>
-              <Text>Welcome to the login page.</Text>
-              <UsernameField/>
-            </Card.Body>
-            <Card.Actions position="right">
-              <Button value="ACTION" />
-            </Card.Actions>
-          </Card>
-        </View>
+        <Container>
+          <Header/>
+          <Content>
+            <Card>
+              <CardItem>
+                <Body>
+                  <Text>Welcome to the login page.</Text>
+                  <UsernameField/>
+                  <Button value="ACTION"/>
+                </Body>
+              </CardItem>
+            </Card>
+          </Content>
+        </Container>
     );
   }
 };
