@@ -21,6 +21,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/" component={GearListPage}/>
 						<Route path="/add" component={GearFormPage}/>
+						<Route path="/add:key" component={GearFormPage}/>
 					</Switch>
 				</Container>
 			</div>

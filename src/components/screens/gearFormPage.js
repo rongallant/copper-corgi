@@ -1,66 +1,76 @@
 import React, {Component} from "react";
 import {withFormik} from "formik";
-import uniqid from "uniqid";
 
 import {GearForm} from "../form/gearForm";
-
-export const GEAR_LIST_KEY = "gear";
+import {gearService} from "../../services/localStorageService";
 
 const MyEnhancedForm = withFormik({
-    mapPropsToValues: () => ({
-	    gearId: uniqid.time(),
-	    category: null,
-	    name: null,
-	    description: null,
-	    weight: null
-    }),
+	mapPropsToValues: () => {
+		const newGearItem = gearService.newGearItem;
+		console.log(newGearItem);
+		return newGearItem;
+	},
 
-    // Custom sync validation
-    validate: values => {
-        let errors = {};
+	// Custom sync validation
+	validate: values => {
+		let errors = {};
 
-        if (!values.category) {
-            errors.category = 'Required';
-        }
+		if (!values.category) {
+			errors.category = 'Required';
+		}
 
-	    if (!values.name) {
-		    errors.name = 'Required';
-	    }
+		if (!values.name) {
+			errors.name = 'Required';
+		}
 
-	    if (!values.weight) {
-		    errors.weight = 'Required';
-	    }
+		if (!values.weight) {
+			errors.weight = 'Required';
+		}
 
-        return errors;
-    },
+		return errors;
+	},
 
-    handleSubmit: (values, {props}) => {
-	    let gearList = [];
-    	if (localStorage.hasOwnProperty(GEAR_LIST_KEY)) {
-    		gearList = JSON.parse(localStorage.getItem(GEAR_LIST_KEY));
-	    }
-	    gearList.push(values);
-		localStorage.setItem(GEAR_LIST_KEY, JSON.stringify(gearList));
-
-	    props.history.push("/"); // Go to list
-
-    },
-    displayName: 'GearForm', // helps with React DevTools
+	handleSubmit: (values, {props}) => {
+		console.debug('props', props);
+		const gearList = gearService.readGearList();
+		console.debug('readGearList', gearList);
+		console.debug('values', {...values});
+		gearService.createGearItem({...values});
+		console.debug('createGearItem', gearList);
+		props.history.push("/"); // Go to list
+	}, displayName: 'GearForm', // helps with React DevTools
 })(GearForm);
 
 class GearFormPage extends Component {
 
-    render() {
-		const {history} = this.props;
+	constructor(props) {
+		super(props);
+		this.state = {
+			gearList: []
+		};
+	}
 
-		return (
-            <div>
-                <h1>Add Gear</h1>
-                <MyEnhancedForm
-                history={history}/>
-            </div>
-        );
-    }
+	componentDidMount() {
+		if (gearService.gearListExists()) {
+			const gearList = gearService.readGearList();
+			this.setState({
+				gearList: gearList
+			});
+		}
+	}
+
+	render() {
+		const {history} = this.props;
+		const {gearList} = this.state;
+
+		return (<div>
+				<h1>Add Gear</h1>
+				<MyEnhancedForm
+					history={history}
+					gearList={gearList}
+				/>
+			</div>);
+	}
 }
 
 export default GearFormPage;

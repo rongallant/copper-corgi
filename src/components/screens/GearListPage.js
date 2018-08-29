@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Table} from 'reactstrap';
-import {GEAR_LIST_KEY} from "./gearFormPage";
+import {Button, Table} from 'reactstrap';
+import {gearService} from "../../services/localStorageService";
 
 export default class GearListPage extends Component {
 
@@ -8,21 +8,33 @@ export default class GearListPage extends Component {
 		super(props);
 		this.state = {
 			gearList: []
-		}
+		};
 	}
 
 	componentDidMount() {
-		if (localStorage.hasOwnProperty(GEAR_LIST_KEY)) {
-			const gearList = JSON.parse(localStorage.getItem(GEAR_LIST_KEY));
+		if (gearService.gearListExists()) {
+			const gearList = gearService.readGearList();
 			this.setState({
 				gearList: gearList
 			});
 		}
 	}
 
+	handleEditItem = (key) => {
+		this.props.history.push(`/edit:${key}`);
+	};
+
+	handleDeleteItem = (key) => {
+		gearService.deleteGearItem(key);
+		const gearList = gearService.readGearList();
+		this.setState({
+			gearList: gearList
+		});
+	};
+
 	render() {
+		const {handleEditItem, handleDeleteItem} = this;
 		const {gearList} = this.state;
-		console.log('render:gearList', gearList);
 
 		return (<div>
 			<h1>Gear</h1>
@@ -35,10 +47,20 @@ export default class GearListPage extends Component {
 					</tr>
 				</thead>
 				<tbody>
-					{gearList.map((gear, index) => <tr key={gear.gearId}>
+					{gearList.map((gear, index) => <tr key={gear.key}>
 						<th scope="row">{index+ 1}</th>
 						<td>{gear.name}</td>
 						<td>{gear.weight}</td>
+						<td>
+							<Button
+								onClick={() => handleEditItem(gear.key)}>
+								X
+							</Button>
+							<Button
+								onClick={() => handleDeleteItem(gear.key)}>
+								X
+							</Button>
+						</td>
 					</tr>)}
 				</tbody>
 			</Table>

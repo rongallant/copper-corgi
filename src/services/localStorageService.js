@@ -1,17 +1,20 @@
 import uniqid from "uniqid";
-import GearItem from "../dtos/gearItem";
 
-export const GEAR_LIST_KEY = "gear";
+const GEAR_LIST_KEY = "gear";
 
 /*
  * Gear Entries
  */
 
-export const newGearList = () => {
-	return [];
+const saveGearList = (gearList) => {
+	try {
+		localStorage.setItem(GEAR_LIST_KEY, JSON.stringify(gearList));
+	} catch (e) {
+		throw new Error("Error saving gear list.");
+	}
 };
 
-export const gearListExists = () => {
+const gearListExists = () => {
 	try {
 		return localStorage.hasOwnProperty(GEAR_LIST_KEY);
 	} catch (e) {
@@ -19,20 +22,12 @@ export const gearListExists = () => {
 	}
 };
 
-export const saveGearList = (gearList) => {
-	if (!gearListExists()) {
-		localStorage.setItem(GEAR_LIST_KEY, JSON.stringify(gearList));
-	} else {
-		throw new Error("GearList already exists");
-	}
-};
-
-export const readGearList = () => {
+const readGearList = () => {
 	try {
 		if (gearListExists()) {
 			return JSON.parse(localStorage.getItem(GEAR_LIST_KEY));
 		} else {
-			const newGearList = newGearList();
+			const newGearList = [];
 			saveGearList(newGearList);
 			return newGearList;
 		}
@@ -41,7 +36,7 @@ export const readGearList = () => {
 	}
 };
 
-export const deleteGearList = () => {
+const deleteGearList = () => {
 	if (gearListExists()) {
 		try {
 			return localStorage.removeItem(GEAR_LIST_KEY);
@@ -55,33 +50,49 @@ export const deleteGearList = () => {
  * Gear Entries
  */
 
-export const newGearItem = () => {
-	return new GearItem(uniqid.time());
+const newGearItem = {
+	key: uniqid.time(), category: null, name: null, description: null, weight: null
 };
 
-export const createGearItem = (category, name, description, weight) => {
-	return new GearItem(uniqid.time(), category, name, description, weight);
-};
-
-export const readGearItem = (gearId) => {
+const createGearItem = (gear) => {
 	const gearList = readGearList();
-	return gearList.filter(o => o.gearId === gearId);
+	const {category, name, description, weight} = gear;
+	gearList.push({
+		key: uniqid.time(), category, name, description, weight
+	});
+	saveGearList(gearList);
 };
 
-export const gearItemIndex = (gearId) => {
+const readGearItem = (key) => {
 	const gearList = readGearList();
-	return gearList.findIndex(o => o.gearId === gearId);
+	return gearList.filter(o => o.key === key);
 };
 
-export const updateGearItem = (gearItem) => {
+const gearItemIndex = (key) => {
 	const gearList = readGearList();
-	const gearItemIndex = gearItemIndex(gearItem.gearId);
+	if (!gearList || gearList.length-1 > key) {
+		throw new Error("Error getting gear item index.");
+	}
+	return gearList.findIndex(o => o.key === key);
+};
+
+const updateGearItem = (gearItem) => {
+	const gearList = readGearList();
+	const gearItemIndex = this.gearItemIndex(gearItem.key);
 	gearList[gearItemIndex] = gearItem;
 	saveGearList(gearList);
 };
 
-export const deleteGearItem = (gearId) => {
+const deleteGearItem = (key) => {
+	if (!key) {
+		throw new Error("Could not delete: Invalid key.");
+	}
 	const gearList = readGearList();
-	gearList.pop(gearItemIndex(gearId));
+	gearList.pop(gearItemIndex(key));
 	saveGearList(gearList);
+};
+
+export const gearService = {
+	gearListExists, saveGearList, readGearList, deleteGearList,
+	newGearItem, createGearItem, readGearItem, gearItemIndex, updateGearItem, deleteGearItem
 };
