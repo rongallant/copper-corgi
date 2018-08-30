@@ -2,10 +2,10 @@ import React from "react";
 import {Button, Col, Row} from 'reactstrap';
 import _ from 'lodash';
 
-import CategoryField from "./fields/categoryField";
-import NameField from "./fields/nameField";
-import WeightField from "./fields/weightField";
-import DescriptionField from "./fields/descriptionField";
+import CategoryField from "../fields/categoryField";
+import NameField from "../fields/nameField";
+import WeightField from "../fields/weightField";
+import DescriptionField from "../fields/descriptionField";
 
 export const GearForm = props => {
     const {
@@ -24,28 +24,28 @@ export const GearForm = props => {
             onSubmit={handleSubmit}
             noValidate>
 	        <CategoryField
-		        value={values.email}
+		        value={values.category}
 		        onChange={handleChange}
 		        onBlur={handleBlur}
 		        errors={errors}
 		        touched={touched}
 	        />
 	        <NameField
-		        value={values.email}
+		        value={values.name}
 		        onChange={handleChange}
 		        onBlur={handleBlur}
 		        errors={errors}
 		        touched={touched}
 	        />
 	        <WeightField
-		        value={values.username}
+		        value={values.weight}
 		        onChange={handleChange}
 		        onBlur={handleBlur}
 		        errors={errors}
 		        touched={touched}
 	        />
 	        <DescriptionField
-		        value={values.email}
+		        value={values.description}
 		        onChange={handleChange}
 		        onBlur={handleBlur}
 		        errors={errors}

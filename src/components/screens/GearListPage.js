@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {Button, Table} from 'reactstrap';
+
 import {gearService} from "../../services/localStorageService";
+import {PAGE_EDIT} from "../../App";
 
 export default class GearListPage extends Component {
 
@@ -21,7 +23,7 @@ export default class GearListPage extends Component {
 	}
 
 	handleEditItem = (key) => {
-		this.props.history.push(`/edit:${key}`);
+		this.props.history.push(`${PAGE_EDIT}${key}`);
 	};
 
 	handleDeleteItem = (key) => {
@@ -54,11 +56,11 @@ export default class GearListPage extends Component {
 						<td>
 							<Button
 								onClick={() => handleEditItem(gear.key)}>
-								X
+								<i className="fas fa-edit"/>
 							</Button>
 							<Button
 								onClick={() => handleDeleteItem(gear.key)}>
-								X
+								<i className="far fa-trash-alt"/>
 							</Button>
 						</td>
 					</tr>)}

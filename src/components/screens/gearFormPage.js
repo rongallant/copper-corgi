@@ -1,76 +1,53 @@
 import React, {Component} from "react";
-import {withFormik} from "formik";
 
-import {GearForm} from "../form/gearForm";
+import {AddGearForm} from "../form/addGearForm";
 import {gearService} from "../../services/localStorageService";
+import {EditGearForm} from "../form/editGearForm";
 
-const MyEnhancedForm = withFormik({
-	mapPropsToValues: () => {
-		const newGearItem = gearService.newGearItem;
-		console.log(newGearItem);
-		return newGearItem;
-	},
-
-	// Custom sync validation
-	validate: values => {
-		let errors = {};
-
-		if (!values.category) {
-			errors.category = 'Required';
-		}
-
-		if (!values.name) {
-			errors.name = 'Required';
-		}
-
-		if (!values.weight) {
-			errors.weight = 'Required';
-		}
-
-		return errors;
-	},
-
-	handleSubmit: (values, {props}) => {
-		console.debug('props', props);
-		const gearList = gearService.readGearList();
-		console.debug('readGearList', gearList);
-		console.debug('values', {...values});
-		gearService.createGearItem({...values});
-		console.debug('createGearItem', gearList);
-		props.history.push("/"); // Go to list
-	}, displayName: 'GearForm', // helps with React DevTools
-})(GearForm);
-
-class GearFormPage extends Component {
+export default class GearFormPage extends Component {
 
 	constructor(props) {
 		super(props);
+		const {params} = this.props.match;
+		let isNew = true;
+		let gearItem = gearService.newGearItem;
+		if (params && params.key) {
+			gearItem = gearService.readGearItem(params.key);
+			isNew = false;
+		}
 		this.state = {
-			gearList: []
+			isNew: isNew, gearItem: gearItem
 		};
 	}
 
-	componentDidMount() {
-		if (gearService.gearListExists()) {
-			const gearList = gearService.readGearList();
-			this.setState({
-				gearList: gearList
-			});
-		}
-	}
+	addForm = (history, gearItem) => <div>
+		<h1>Add Gear</h1>
+		<AddGearForm
+			history={history}
+			gearItem={gearItem}
+		/>
+	</div>;
+
+	// TODO Edit Title not showing.
+	editForm = (history, gearItem) => <div>
+		<h1>Edit Gear</h1>
+		<EditGearForm
+			history={history}
+			gearItem={gearItem}
+		/>
+	</div>;
 
 	render() {
+		const {addForm, editForm} = this;
 		const {history} = this.props;
-		const {gearList} = this.state;
+		const {gearItem} = this.state;
+		let form;
+		if (this.state.isNew) {
+			form = addForm(history, gearItem)
+		} else {
+			form = editForm(history, gearItem)
+		}
 
-		return (<div>
-				<h1>Add Gear</h1>
-				<MyEnhancedForm
-					history={history}
-					gearList={gearList}
-				/>
-			</div>);
+		return (form);
 	}
 }
-
-export default GearFormPage;

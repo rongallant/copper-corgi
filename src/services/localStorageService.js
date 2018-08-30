@@ -51,7 +51,7 @@ const deleteGearList = () => {
  */
 
 const newGearItem = {
-	key: uniqid.time(), category: null, name: null, description: null, weight: null
+	key: uniqid.time(), category: undefined, name: undefined, description: undefined, weight: undefined
 };
 
 const createGearItem = (gear) => {
@@ -65,7 +65,7 @@ const createGearItem = (gear) => {
 
 const readGearItem = (key) => {
 	const gearList = readGearList();
-	return gearList.filter(o => o.key === key);
+	return gearList.filter(o => o.key === key)[0];
 };
 
 const gearItemIndex = (key) => {
