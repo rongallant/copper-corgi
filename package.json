@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "ajv": "^6.5.3",
+    "convert-units": "^2.3.4",
     "formik": "^1.1.1",
     "lodash": "^4.17.10",
+    "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-router-dom": "^4.3.1",

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Table} from 'reactstrap';
 
-import {gearService} from "../../services/localStorageService";
+import {gearService, displayUnit} from "../../services/localStorageService";
 import {PAGE_EDIT} from "../../App";
 
 export default class GearListPage extends Component {
@@ -40,25 +40,30 @@ export default class GearListPage extends Component {
 
 		return (<div>
 			<h1>Gear</h1>
-			<Table responsive>
+			<Table responsive hover>
 				<thead>
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Name</th>
 						<th scope="col">Weight</th>
+						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					{gearList.map((gear, index) => <tr key={gear.key}>
+					{gearList.map((gear, index) => <tr key={gear.key} onClick={() => handleEditItem(gear.key)}>
 						<th scope="row">{index+ 1}</th>
 						<td>{gear.name}</td>
-						<td>{gear.weight}</td>
+						<td>{displayUnit(gear.weight)}</td>
 						<td>
+							{/*<Button*/}
+								{/*color="link"*/}
+								{/*size="sm"*/}
+								{/*onClick={() => handleEditItem(gear.key)}>*/}
+								{/*<i className="fas fa-edit"/>*/}
+							{/*</Button>*/}
 							<Button
-								onClick={() => handleEditItem(gear.key)}>
-								<i className="fas fa-edit"/>
-							</Button>
-							<Button
+								color="link"
+								size="sm"
 								onClick={() => handleDeleteItem(gear.key)}>
 								<i className="far fa-trash-alt"/>
 							</Button>

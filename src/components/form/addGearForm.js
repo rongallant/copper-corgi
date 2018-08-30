@@ -1,8 +1,6 @@
 import {withFormik} from "formik";
 
 import {GearForm} from "./components/gearForm";
-import {gearService} from "../../services/localStorageService";
-import {PAGE_LIST} from "../../App";
 
 export const AddGearForm = withFormik({
 
@@ -29,11 +27,11 @@ export const AddGearForm = withFormik({
 	},
 
 	handleSubmit: (values, {props}) => {
-		// TODO Edit
-		gearService.createGearItem({...values});
-		props.history.push(PAGE_LIST); // Go to list
+		props.handleSubmit(values, props);
 	},
 
 	displayName: 'AddGearForm',
 
 })(GearForm);
+
+

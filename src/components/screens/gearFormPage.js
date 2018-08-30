@@ -3,51 +3,74 @@ import React, {Component} from "react";
 import {AddGearForm} from "../form/addGearForm";
 import {gearService} from "../../services/localStorageService";
 import {EditGearForm} from "../form/editGearForm";
+import {PAGE_LIST} from "../../App";
 
 export default class GearFormPage extends Component {
 
 	constructor(props) {
 		super(props);
-		const {params} = this.props.match;
-		let isNew = true;
-		let gearItem = gearService.newGearItem;
-		if (params && params.key) {
-			gearItem = gearService.readGearItem(params.key);
-			isNew = false;
-		}
 		this.state = {
-			isNew: isNew, gearItem: gearItem
+			isNew: true,
+			gearItem: gearService.newGearItem
 		};
 	}
 
-	addForm = (history, gearItem) => <div>
-		<h1>Add Gear</h1>
-		<AddGearForm
-			history={history}
-			gearItem={gearItem}
-		/>
-	</div>;
+	static getDerivedStateFromProps(props, state) {
+		if (props.match && state.gearItem) {
+			const {key} = props.match.params;
+			let isNew = true;
+			let gearItem = gearService.newGearItem;
+			if (props.match.params !== undefined && key !== undefined) {
+				gearItem = gearService.readGearItem(key);
+				isNew = false;
+			}
+			return {
+				isNew: isNew,
+				gearItem: gearItem
+			};
+		}
+		return null;
+	}
 
-	// TODO Edit Title not showing.
-	editForm = (history, gearItem) => <div>
-		<h1>Edit Gear</h1>
-		<EditGearForm
-			history={history}
-			gearItem={gearItem}
-		/>
-	</div>;
+	handleCancel = () => {
+		this.props.history.push(PAGE_LIST);
+	}
+
+	handleSubmit = (values, {props}) => {
+		if (this.state.isNew) {
+			gearService.createGearItem({...values});
+		} else {
+			gearService.updateGearItem({...values});
+		}
+		this.props.history.push(PAGE_LIST); // Go to list
+	};
 
 	render() {
-		const {addForm, editForm} = this;
+		const {handleCancel, handleSubmit} = this;
 		const {history} = this.props;
 		const {gearItem} = this.state;
+
 		let form;
 		if (this.state.isNew) {
-			form = addForm(history, gearItem)
+			form = <div>
+				<h2>Add Gear</h2>
+				<AddGearForm
+					history={history}
+					gearItem={gearItem}
+					handleSubmit={handleSubmit}
+				/>
+			</div>;
 		} else {
-			form = editForm(history, gearItem)
+			form = <div>
+				<h2>Edit Gear</h2>
+				<EditGearForm
+					history={history}
+					gearItem={gearItem}
+					handleCancel={handleCancel}
+					handleSubmit={handleSubmit}
+				/>
+			</div>;
 		}
-
 		return (form);
 	}
 }

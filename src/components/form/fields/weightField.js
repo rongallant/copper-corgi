@@ -8,10 +8,9 @@ export default class WeightField extends Component {
 
 		return (<TextField
 			{...this.props}
-			help="Weight in grams"
 			id="weight"
 			invalid={errors[id] && touched[id]}
-			label="Weight"
+			label="Weight (Grams)"
 			type="number"
 		/>);
 	}

@@ -6,7 +6,6 @@ import './App.css';
 import GearFormPage from './components/screens/gearFormPage'
 import GearListPage from "./components/screens/GearListPage";
 import MainMenu from "./components/menus/mainMenu";
-import {EditGearForm} from "./components/form/editGearForm";
 
 export const PAGE_LIST = "/";
 export const PAGE_ADD = "/add";
@@ -26,7 +25,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path={PAGE_LIST} component={GearListPage}/>
 						<Route path={PAGE_ADD} component={GearFormPage}/>
-						<Route path={`${PAGE_EDIT}:key`} component={EditGearForm}/>
+						<Route path={`${PAGE_EDIT}:key`} component={GearFormPage}/>
 					</Switch>
 				</Container>
 			</div>

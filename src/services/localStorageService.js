@@ -1,6 +1,15 @@
 import uniqid from "uniqid";
+import _ from "lodash";
+import convert from "convert-units/lib";
 
 const GEAR_LIST_KEY = "gear";
+
+export const displayUnit = (grams) => {
+	const oz = convert(grams).from('g').to('oz');
+	const best = convert(oz).from('oz').toBest();
+	const val = Math.round(best.val * 100) / 100;
+	return `${val} ${best.plural}`;
+};
 
 /*
  * Gear Entries
@@ -51,7 +60,7 @@ const deleteGearList = () => {
  */
 
 const newGearItem = {
-	key: uniqid.time(), category: undefined, name: undefined, description: undefined, weight: undefined
+	key: uniqid.time(), category: "", name: "", description: "", weight: ""
 };
 
 const createGearItem = (gear) => {
@@ -73,14 +82,17 @@ const gearItemIndex = (key) => {
 	if (!gearList || gearList.length-1 > key) {
 		throw new Error("Error getting gear item index.");
 	}
-	return gearList.findIndex(o => o.key === key);
+	return _.findIndex(gearList, o => o.key === key);
 };
 
-const updateGearItem = (gearItem) => {
-	const gearList = readGearList();
-	const gearItemIndex = this.gearItemIndex(gearItem.key);
-	gearList[gearItemIndex] = gearItem;
-	saveGearList(gearList);
+const updateGearItem = (item) => {
+	if (!item || !item.key) {
+		throw new Error("Could not delete: Invalid key.");
+	}
+	const list = readGearList();
+	const index = gearItemIndex(item.key);
+	list.splice(index, 1, item);
+	saveGearList(list);
 };
 
 const deleteGearItem = (key) => {
@@ -88,7 +100,8 @@ const deleteGearItem = (key) => {
 		throw new Error("Could not delete: Invalid key.");
 	}
 	const gearList = readGearList();
-	gearList.pop(gearItemIndex(key));
+	const index = gearItemIndex(key);
+	gearList.splice(index, 1);
 	saveGearList(gearList);
 };
 

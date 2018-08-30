@@ -11,7 +11,6 @@ export default class NameField extends Component {
 			id="name"
 			invalid={errors[id] && touched[id]}
 			label="Name"
-			type="text"
 		/>);
 	}
 }

@@ -1,8 +1,6 @@
 import {withFormik} from "formik";
 
 import {GearForm} from "./components/gearForm";
-import {gearService} from "../../services/localStorageService";
-import {PAGE_LIST} from "../../App";
 
 export const EditGearForm = withFormik({
 
@@ -29,8 +27,7 @@ export const EditGearForm = withFormik({
 	},
 
 	handleSubmit: (values, {props}) => {
-		gearService.createGearItem({...values});
-		props.history.push(PAGE_LIST); // Go to list
+		props.handleSubmit(values, props);
 	},
 
 	displayName: 'EditGearForm',
