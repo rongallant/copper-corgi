@@ -11,6 +11,8 @@ export default class WeightField extends Component {
 			id="weight"
 			invalid={errors[id] && touched[id]}
 			label="Weight (Grams)"
+			min={1}
+			max={45360}
 			type="number"
 		/>);
 	}

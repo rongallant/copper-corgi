@@ -4,6 +4,8 @@ import convert from "convert-units/lib";
 
 const GEAR_LIST_KEY = "gear";
 
+const store = () => localStorage;
+
 export const displayUnit = (grams) => {
 	const oz = convert(grams).from('g').to('oz');
 	const best = convert(oz).from('oz').toBest();
@@ -17,7 +19,7 @@ export const displayUnit = (grams) => {
 
 const saveGearList = (gearList) => {
 	try {
-		localStorage.setItem(GEAR_LIST_KEY, JSON.stringify(gearList));
+		store().setItem(GEAR_LIST_KEY, JSON.stringify(gearList));
 	} catch (e) {
 		throw new Error("Error saving gear list.");
 	}
@@ -25,7 +27,7 @@ const saveGearList = (gearList) => {
 
 const gearListExists = () => {
 	try {
-		return localStorage.hasOwnProperty(GEAR_LIST_KEY);
+		return store().hasOwnProperty(GEAR_LIST_KEY);
 	} catch (e) {
 		throw new Error("Error checking if gear list exists.");
 	}
@@ -34,7 +36,7 @@ const gearListExists = () => {
 const readGearList = () => {
 	try {
 		if (gearListExists()) {
-			return JSON.parse(localStorage.getItem(GEAR_LIST_KEY));
+			return JSON.parse(store().getItem(GEAR_LIST_KEY));
 		} else {
 			const newGearList = [];
 			saveGearList(newGearList);
@@ -48,7 +50,7 @@ const readGearList = () => {
 const deleteGearList = () => {
 	if (gearListExists()) {
 		try {
-			return localStorage.removeItem(GEAR_LIST_KEY);
+			return store().removeItem(GEAR_LIST_KEY);
 		} catch (e) {
 			throw new Error("Could not delete gear list.");
 		}

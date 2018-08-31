@@ -12,6 +12,7 @@ export default class DescriptionField extends Component {
 			invalid={errors[id] && touched[id]}
 			label="Description"
 			type="textarea"
+			maxLength={500}
 		/>);
 	}
 }
