@@ -28,9 +28,15 @@ export default class GearListPage extends ParseReact.Component(React) {
 		this.props.history.push(`${PAGE_EDIT_BASE}/${gearItem.id}`);
 	};
 
+	renderResults = (hasResults) => {
+
+
+	}
+
 	render() {
 		const {handleEditItem} = this;
 		const {gearList} = this.state;
+		const hasResults = gearList.length > 0;
 
 		return (<div>
 			<h1>Gear</h1>
@@ -44,9 +50,8 @@ export default class GearListPage extends ParseReact.Component(React) {
 					</tr>
 				</thead>
 				<tbody>
-					{gearList.map((gear, index) => {
+					{hasResults && gearList.map((gear, index) => {
 						const {id, attributes: {name, category, weight}} = gear;
-
 						return (<tr key={id} onClick={() => handleEditItem(gear)}>
 							<th scope="row">{index + 1}</th>
 							<td>{category}</td>
@@ -54,6 +59,10 @@ export default class GearListPage extends ParseReact.Component(React) {
 							<td>{displayUnit(weight)}</td>
 						</tr>)
 					})}
+
+					{!hasResults && (<tr>
+						<th colSpan={5} className="text-center">You have no gear!</th>
+					</tr>)}
 				</tbody>
 			</Table>
 		</div>);

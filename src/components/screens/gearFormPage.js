@@ -1,6 +1,7 @@
 import React from "react";
 import ParseReact from "parse-react";
 import Parse from "parse/node";
+import confirm from 'reactstrap-confirm';
 
 import {AddGearForm} from "../form/addGearForm";
 import {EditGearForm} from "../form/editGearForm";
@@ -10,6 +11,7 @@ export default class GearFormPage extends ParseReact.Component(React) {
 
 	constructor(props) {
 		super(props);
+		this.handleDelete = this.handleDelete.bind(this);
 		this.state = {
 			loading: true, isNew: true, gearItem: null
 		};
@@ -41,16 +43,25 @@ export default class GearFormPage extends ParseReact.Component(React) {
 		this.props.history.push(PAGE_LIST);
 	};
 
-	handleDelete = (key) => {
-		const query = new Parse.Query('Gear');
-		query.find("objectId", key);
-		query.first().then(gear => {
-			gear.destroy();
-			this.props.history.push(PAGE_LIST); // Go to list
-		}).catch(e => {
-			console.error(e);
-			throw new Error(`Error deleting: ${key}`);
+	async handleDelete(key) {
+		let result = await confirm({
+			title: 'Warning',
+			message: 'Are you sure you want to delete?',
+			confirmText: 'Delete',
+			confirmColor: 'danger',
+			cancelColor: 'link'
 		});
+		if (result) {
+			const query = new Parse.Query('Gear');
+			query.find("objectId", key);
+			query.first().then(gear => {
+				gear.destroy();
+				this.props.history.push(PAGE_LIST); // Go to list
+			}).catch(e => {
+				console.error(e);
+				throw new Error(`Error deleting: ${key}`);
+			});
+		}
 	};
 
 	handleSubmit = (values, {props}) => {
