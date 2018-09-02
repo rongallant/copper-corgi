@@ -12,7 +12,8 @@ const PARSE_APP_ID = 'Ls7oRMes2ZDHIx85GtVOeVdx1x67atOaQ07qVNZH';
 const PARSE_JS_KEY = 'pl3Vx4tVNYIu4jmuAwZHXgObP0L8OjBt1rBOEbvz';
 const PARSE_SERVER_URL = 'https://parseapi.back4app.com';
 
-export const PAGE_LIST = "/";
+export const PAGE_HOME = "/";
+export const PAGE_LIST = "/list";
 export const PAGE_ADD = "/add";
 export const PAGE_EDIT_BASE = "/edit";
 export const PAGE_EDIT_PATH = `${PAGE_EDIT_BASE}/:key`;
@@ -26,13 +27,14 @@ class App extends Component {
 
 		return (<Router>
 			<div id="gearApp">
-				<Navbar className="mb-3" color="dark" dark>
+				<Navbar expand="md" color="dark" dark>
 					<NavbarBrand href="/">Gear Tracker</NavbarBrand>
 					<MainMenu/>
 				</Navbar>
 				<Container>
 					<Switch>
-						<Route exact path={PAGE_LIST} component={GearListPage}/>
+						<Route exact path={PAGE_HOME} component={GearListPage}/>
+						<Route path={PAGE_LIST} component={GearListPage}/>
 						<Route path={PAGE_ADD} component={GearFormPage}/>
 						<Route path={PAGE_EDIT_PATH} component={GearFormPage}/>
 					</Switch>

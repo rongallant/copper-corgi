@@ -44,7 +44,13 @@ export default class GearFormPage extends ParseReact.Component(React) {
 	};
 
 	async handleDelete(key) {
-		let result = await confirm();
+		let result = await confirm({
+			title: 'Warning',
+			message: 'Are you sure you want to delete?',
+			confirmText: 'Delete',
+			confirmColor: 'danger',
+			cancelColor: 'link'
+		});
 		if (result) {
 			const query = new Parse.Query('Gear');
 			query.find("objectId", key);
