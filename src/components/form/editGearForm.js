@@ -1,11 +1,16 @@
 import {withFormik} from "formik";
 
 import {GearForm} from "./components/gearForm";
+// import Parse from "parse/node";
 
 export const EditGearForm = withFormik({
 
 	mapPropsToValues: (props) => {
-		return props.gearItem;
+		if (props.gearItem) {
+			const {id, attributes} = props.gearItem;
+			return {id, ...attributes};
+		}
+		return {id: "", category: "", name: "", description: "", weight: ""};
 	},
 
 	validate: values => {

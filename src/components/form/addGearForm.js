@@ -5,7 +5,7 @@ import {GearForm} from "./components/gearForm";
 export const AddGearForm = withFormik({
 
 	mapPropsToValues: (props) => {
-		return props.gearItem;
+		return {category: "", name: "", description: "", weight: ""};
 	},
 
 	validate: values => {

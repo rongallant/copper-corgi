@@ -10,34 +10,37 @@ import WeightField from "../fields/weightField";
 
 export const GearForm = props => {
 	const {
-		values, touched, errors, isSubmitting, handleCancel, handleChange, handleBlur, handleSubmit, handleReset, dirty,
+		values, touched, errors, isSubmitting, handleCancel, handleChange,
+		handleDelete, handleBlur, handleSubmit, handleReset, dirty,
 	} = props;
+	const {id, name, category, weight, description} = values;
+
 	return (<form
 			onSubmit={handleSubmit}
 			noValidate>
 			<CategoryField
-				value={values.category}
+				value={category}
 				onChange={handleChange}
 				onBlur={handleBlur}
 				errors={errors}
 				touched={touched}
 			/>
 			<NameField
-				value={values.name}
+				value={name}
 				onChange={handleChange}
 				onBlur={handleBlur}
 				errors={errors}
 				touched={touched}
 			/>
 			<WeightField
-				value={values.weight}
+				value={weight}
 				onChange={handleChange}
 				onBlur={handleBlur}
 				errors={errors}
 				touched={touched}
 			/>
 			<DescriptionField
-				value={values.description}
+				value={description}
 				onChange={handleChange}
 				onBlur={handleBlur}
 				errors={errors}
@@ -45,7 +48,16 @@ export const GearForm = props => {
 			/>
 			<Row
 				className="justify-content-end">
-				<Col xs="auto"/>
+				<Col md={3}>
+					<Button
+						block
+						className="mr-3 mb-3"
+						type="button"
+						onClick={()=>handleDelete(id)}
+						outline>
+						Delete
+					</Button>
+				</Col>
 				<Col md={3}>
 					<Button
 						block

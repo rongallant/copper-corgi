@@ -1,62 +1,108 @@
-import React, {Component} from "react";
+import React from "react";
+import ParseReact from "parse-react";
+import Parse from "parse/node";
 
 import {AddGearForm} from "../form/addGearForm";
-import {gearService} from "../../services/localStorageService";
 import {EditGearForm} from "../form/editGearForm";
-import {PAGE_LIST} from "../../App";
+import {PAGE_EDIT_PATH, PAGE_LIST} from "../../App";
 
-export default class GearFormPage extends Component {
+export default class GearFormPage extends ParseReact.Component(React) {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			isNew: true,
-			gearItem: gearService.newGearItem
+			loading: true, isNew: true, gearItem: null
 		};
 	}
 
-	static getDerivedStateFromProps(props, state) {
-		if (props.match && state.gearItem) {
-			const {key} = props.match.params;
-			let isNew = true;
-			let gearItem = gearService.newGearItem;
-			if (props.match.params !== undefined && key !== undefined) {
-				gearItem = gearService.readGearItem(key);
-				isNew = false;
-			}
-			return {
-				isNew: isNew,
-				gearItem: gearItem
-			};
+	observe(nextProps, nextState) {
+	}
+
+	componentDidMount() {
+		const {match: {path, params: {key}}} = this.props;
+
+		if (PAGE_EDIT_PATH === path) {
+			const query = new Parse.Query('Gear');
+			query.equalTo("objectId", key);
+			query.first().then(result => {
+				this.setState({
+					gearItem: result, isNew: false, loading: false
+				});
+			});
+		} else {
+			this.setState({
+				// gearItem: result,
+				isNew: true, loading: false
+			});
 		}
-		return null;
 	}
 
 	handleCancel = () => {
 		this.props.history.push(PAGE_LIST);
-	}
+	};
+
+	handleDelete = (key) => {
+		const query = new Parse.Query('Gear');
+		query.find("objectId", key);
+		query.first().then(gear => {
+			gear.destroy();
+			this.props.history.push(PAGE_LIST); // Go to list
+		}).catch(e => {
+			console.error(e);
+			throw new Error(`Error deleting: ${key}`);
+		});
+	};
 
 	handleSubmit = (values, {props}) => {
+		const {id, category, name, description, weight} = values;
+
 		if (this.state.isNew) {
-			gearService.createGearItem({...values});
+			const Gear = Parse.Object.extend("Gear");
+			const gear = new Gear();
+			gear.set("category", category);
+			gear.set("name", name);
+			gear.set("description", description);
+			gear.set("weight", weight);
+			gear.save()
+				.then((gear) => {
+					console.log('New great created with objectId: ' + gear.id);
+				}, (e) => {
+					console.error(e);
+					throw new Error("Error creating gear.");
+				});
 		} else {
-			gearService.updateGearItem({...values});
+			const query = new Parse.Query('Gear');
+			query.equalTo("objectId", id);
+			query.first().then(gear => {
+				gear.set("category", category);
+				gear.set("name", name);
+				gear.set("description", description);
+				gear.set("weight", weight);
+				gear.save();
+			}).catch(e => {
+				console.error(e);
+				throw new Error("Error updating gear.");
+			});
 		}
 		this.props.history.push(PAGE_LIST); // Go to list
 	};
 
 	render() {
-		const {handleCancel, handleSubmit} = this;
+		const {handleCancel, handleDelete, handleSubmit} = this;
 		const {history} = this.props;
-		const {gearItem} = this.state;
+		const {isNew, gearItem, loading} = this.state;
 
-		let form;
-		if (this.state.isNew) {
+		if (loading) return <div>Loading...</div>;
+
+		let form = null;
+		if (isNew && gearItem) {
 			form = <div>
 				<h2>Add Gear</h2>
 				<AddGearForm
 					history={history}
 					gearItem={gearItem}
+					handleCancel={handleCancel}
+					handleDelete={handleDelete}
 					handleSubmit={handleSubmit}
 				/>
 			</div>;
@@ -67,10 +113,11 @@ export default class GearFormPage extends Component {
 					history={history}
 					gearItem={gearItem}
 					handleCancel={handleCancel}
+					handleDelete={handleDelete}
 					handleSubmit={handleSubmit}
 				/>
 			</div>;
 		}
-		return (form);
+		return form;
 	}
 }
