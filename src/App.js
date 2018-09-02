@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import {Container, Navbar, NavbarBrand} from 'reactstrap';
+import {Container} from 'reactstrap';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Parse from "parse/node";
 
 import './App.css';
 import GearFormPage from './components/screens/gearFormPage'
 import GearListPage from "./components/screens/GearListPage";
-import MainMenu from "./components/menus/mainMenu";
+import Header from "./components/layout/header";
+import Footer from "./components/layout/footer";
 
 const PARSE_APP_ID = 'Ls7oRMes2ZDHIx85GtVOeVdx1x67atOaQ07qVNZH';
 const PARSE_JS_KEY = 'pl3Vx4tVNYIu4jmuAwZHXgObP0L8OjBt1rBOEbvz';
@@ -27,10 +28,7 @@ class App extends Component {
 
 		return (<Router>
 			<div id="gearApp">
-				<Navbar expand="md" color="dark" dark>
-					<NavbarBrand href="/">Gear Tracker</NavbarBrand>
-					<MainMenu/>
-				</Navbar>
+				<Header/>
 				<Container>
 					<Switch>
 						<Route exact path={PAGE_HOME} component={GearListPage}/>
@@ -39,6 +37,7 @@ class App extends Component {
 						<Route path={PAGE_EDIT_PATH} component={GearFormPage}/>
 					</Switch>
 				</Container>
+				<Footer/>
 			</div>
 		</Router>);
 	}
