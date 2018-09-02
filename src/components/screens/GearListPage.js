@@ -1,41 +1,35 @@
-import React, {Component} from "react";
-import {Button, Table} from 'reactstrap';
+import React from "react";
+import {Table} from 'reactstrap';
+import Parse from "parse/node";
+import ParseReact from "parse-react";
 
-import {gearService, displayUnit} from "../../services/localStorageService";
-import {PAGE_EDIT} from "../../App";
+import {displayUnit} from "../../services/localStorageService";
+import {PAGE_EDIT_BASE} from "../../App";
 
-export default class GearListPage extends Component {
+export default class GearListPage extends ParseReact.Component(React) {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			gearList: []
+			gearList: [], gearItem: {}, redirect: true
 		};
 	}
 
-	componentDidMount() {
-		if (gearService.gearListExists()) {
-			const gearList = gearService.readGearList();
+	observe() {
+		const query = new Parse.Query('Gear');
+		query.find().then(results => {
 			this.setState({
-				gearList: gearList
+				gearList: results
 			});
-		}
+		});
 	}
 
-	handleEditItem = (key) => {
-		this.props.history.push(`${PAGE_EDIT}${key}`);
-	};
-
-	handleDeleteItem = (key) => {
-		gearService.deleteGearItem(key);
-		const gearList = gearService.readGearList();
-		this.setState({
-			gearList: gearList
-		});
+	handleEditItem = (gearItem) => {
+		this.props.history.push(`${PAGE_EDIT_BASE}/${gearItem.id}`);
 	};
 
 	render() {
-		const {handleEditItem, handleDeleteItem} = this;
+		const {handleEditItem} = this;
 		const {gearList} = this.state;
 
 		return (<div>
@@ -44,31 +38,22 @@ export default class GearListPage extends Component {
 				<thead>
 					<tr>
 						<th scope="col">#</th>
+						<th scope="col">Category</th>
 						<th scope="col">Name</th>
 						<th scope="col">Weight</th>
-						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					{gearList.map((gear, index) => <tr key={gear.key} onClick={() => handleEditItem(gear.key)}>
-						<th scope="row">{index+ 1}</th>
-						<td>{gear.name}</td>
-						<td>{displayUnit(gear.weight)}</td>
-						<td>
-							{/*<Button*/}
-								{/*color="link"*/}
-								{/*size="sm"*/}
-								{/*onClick={() => handleEditItem(gear.key)}>*/}
-								{/*<i className="fas fa-edit"/>*/}
-							{/*</Button>*/}
-							<Button
-								color="link"
-								size="sm"
-								onClick={() => handleDeleteItem(gear.key)}>
-								<i className="far fa-trash-alt"/>
-							</Button>
-						</td>
-					</tr>)}
+					{gearList.map((gear, index) => {
+						const {id, attributes: {name, category, weight}} = gear;
+
+						return (<tr key={id} onClick={() => handleEditItem(gear)}>
+							<th scope="row">{index + 1}</th>
+							<td>{category}</td>
+							<td>{name}</td>
+							<td>{displayUnit(weight)}</td>
+						</tr>)
+					})}
 				</tbody>
 			</Table>
 		</div>);
