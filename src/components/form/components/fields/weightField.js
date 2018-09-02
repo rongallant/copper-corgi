@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import TextField from "../../common/fields/textField";
+import TextField from "../../../common/fields/textField";
 
 export default class WeightField extends Component {
 
