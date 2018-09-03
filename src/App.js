@@ -10,9 +10,14 @@ import EditGearPage from "./components/screens/editGearPage";
 import HomePage from "./components/screens/homePage";
 import GearListPage from "./components/screens/gearListPage";
 
-const PARSE_APP_ID = 'Ls7oRMes2ZDHIx85GtVOeVdx1x67atOaQ07qVNZH';
-const PARSE_JS_KEY = 'pl3Vx4tVNYIu4jmuAwZHXgObP0L8OjBt1rBOEbvz';
-const PARSE_SERVER_URL = 'https://parseapi.back4app.com';
+// const PARSE_APP_ID = 'Ls7oRMes2ZDHIx85GtVOeVdx1x67atOaQ07qVNZH';
+// const PARSE_JS_KEY = 'pl3Vx4tVNYIu4jmuAwZHXgObP0L8OjBt1rBOEbvz';
+// const PARSE_SERVER_URL = 'https://parseapi.back4app.com';
+
+const PARSE_APP_ID = 'BacPacTracApp';
+const PARSE_JS_KEY = 'BacPacTracAppJs';
+const PARSE_MASTER_KEY = 'BacPacTracAppMaster';
+const PARSE_SERVER_URL = 'http://127.0.0.1:1337/parse';
 
 export const PAGE_HOME = "/";
 export const PAGE_LIST = "/list";
