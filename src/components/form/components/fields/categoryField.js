@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import TextField from '../../common/fields/textField'
+import SelectField from '../../../common/fields/selectField'
 
 export default class CategoryField extends Component {
 
 	render() {
 		const {errors, id, touched} = this.props;
 
-		return (<TextField
+		return (<SelectField
 			{...this.props}
 			id="category"
 			invalid={errors[id] && touched[id]}
@@ -17,6 +17,6 @@ export default class CategoryField extends Component {
 			<option value="shelter">Shelter</option>
 			<option value="sleeping">Sleeping</option>
 			<option value="clothes">Clothes</option>
-		</TextField>);
+		</SelectField>);
 	}
 }

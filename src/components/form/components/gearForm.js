@@ -3,94 +3,82 @@ import PropTypes from "prop-types";
 import {Button, Col, Row} from 'reactstrap';
 import _ from 'lodash';
 
-import CategoryField from "../fields/categoryField";
-import DescriptionField from "../fields/descriptionField";
-import NameField from "../fields/nameField";
-import WeightField from "../fields/weightField";
+import CategoryField from "./fields/categoryField";
+import DescriptionField from "./fields/descriptionField";
+import NameField from "./fields/nameField";
+import WeightField from "./fields/weightField";
 
 export const GearForm = props => {
 	const {
-		values, touched, errors, isSubmitting, handleCancel, handleChange,
-		handleDelete, handleBlur, handleSubmit, handleReset, dirty,
+		values, touched, errors, isSubmitting, handleCancel,
+		handleChange, handleBlur, handleSubmit, handleReset, dirty,
 	} = props;
-	const {id, name, category, weight, description} = values;
+	const {name, category, weight, description} = values;
 
-	return (<form
-			onSubmit={handleSubmit}
-			noValidate>
-			<CategoryField
-				value={category}
-				onChange={handleChange}
-				onBlur={handleBlur}
-				errors={errors}
-				touched={touched}
-			/>
-			<NameField
-				value={name}
-				onChange={handleChange}
-				onBlur={handleBlur}
-				errors={errors}
-				touched={touched}
-			/>
-			<WeightField
-				value={weight}
-				onChange={handleChange}
-				onBlur={handleBlur}
-				errors={errors}
-				touched={touched}
-			/>
-			<DescriptionField
-				value={description}
-				onChange={handleChange}
-				onBlur={handleBlur}
-				errors={errors}
-				touched={touched}
-			/>
-			<Row
-				className="justify-content-end">
-				<Col md={3}>
-					<Button
-						block
-						className="mr-3 mb-3"
-						type="button"
-						onClick={()=>handleDelete(id)}
-						outline>
-						Delete
-					</Button>
-				</Col>
-				<Col md={3}>
-					<Button
-						block
-						className="mr-3 mb-3"
-						type="button"
-						onClick={handleCancel}
-						outline>
-						Cancel
-					</Button>
-				</Col>
-				<Col md={3}>
-					<Button
-						block
-						className="mr-3 mb-3"
-						color="secondary"
-						type="button"
-						onClick={handleReset}
-						disabled={(!dirty && _.isEmpty(errors)) || isSubmitting}>
-						Reset
-					</Button>
-				</Col>
-				<Col md={3}>
-					<Button
-						block
-						className="mr-3"
-						color="primary"
-						type="submit"
-						disabled={isSubmitting}>
-						Submit
-					</Button>
-				</Col>
-			</Row>
-		</form>);
+	return (<form onSubmit={handleSubmit} noValidate>
+		<CategoryField
+			value={category}
+			onChange={handleChange}
+			onBlur={handleBlur}
+			errors={errors}
+			touched={touched}
+		/>
+		<NameField
+			value={name}
+			onChange={handleChange}
+			onBlur={handleBlur}
+			errors={errors}
+			touched={touched}
+		/>
+		<WeightField
+			value={weight}
+			onChange={handleChange}
+			onBlur={handleBlur}
+			errors={errors}
+			touched={touched}
+		/>
+		<DescriptionField
+			value={description}
+			onChange={handleChange}
+			onBlur={handleBlur}
+			errors={errors}
+			touched={touched}
+		/>
+		<Row
+			className="justify-content-end">
+			<Col md={3}>
+				<Button
+					block
+					className="mr-3 mb-3"
+					type="button"
+					onClick={handleCancel}
+					outline>
+					Cancel
+				</Button>
+			</Col>
+			<Col md={3}>
+				<Button
+					block
+					outline
+					className="mr-3 mb-3"
+					type="button"
+					onClick={handleReset}
+					disabled={(!dirty && _.isEmpty(errors)) || isSubmitting}>
+					Reset
+				</Button>
+			</Col>
+			<Col md={3}>
+				<Button
+					block
+					className="mr-3"
+					color="primary"
+					type="submit"
+					disabled={isSubmitting}>
+					Submit
+				</Button>
+			</Col>
+		</Row>
+	</form>);
 };
 
 GearForm.propTypes = {

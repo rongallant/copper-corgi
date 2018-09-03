@@ -3,11 +3,12 @@ import {Container} from 'reactstrap';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Parse from "parse/node";
 
-import './App.css';
-import GearFormPage from './components/screens/gearFormPage'
-import GearListPage from "./components/screens/GearListPage";
+import AddGearPage from './components/screens/addGearPage'
 import Header from "./components/layout/header";
 import Footer from "./components/layout/footer";
+import EditGearPage from "./components/screens/editGearPage";
+import HomePage from "./components/screens/homePage";
+import GearListPage from "./components/screens/gearListPage";
 
 const PARSE_APP_ID = 'Ls7oRMes2ZDHIx85GtVOeVdx1x67atOaQ07qVNZH';
 const PARSE_JS_KEY = 'pl3Vx4tVNYIu4jmuAwZHXgObP0L8OjBt1rBOEbvz';
@@ -31,10 +32,10 @@ class App extends Component {
 				<Header/>
 				<Container>
 					<Switch>
-						<Route exact path={PAGE_HOME} component={GearListPage}/>
+						<Route exact path={PAGE_HOME} component={HomePage}/>
 						<Route path={PAGE_LIST} component={GearListPage}/>
-						<Route path={PAGE_ADD} component={GearFormPage}/>
-						<Route path={PAGE_EDIT_PATH} component={GearFormPage}/>
+						<Route path={PAGE_ADD} component={AddGearPage}/>
+						<Route path={PAGE_EDIT_PATH} component={EditGearPage}/>
 					</Switch>
 				</Container>
 				<Footer/>

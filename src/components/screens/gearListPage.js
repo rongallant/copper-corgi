@@ -11,7 +11,7 @@ export default class GearListPage extends ParseReact.Component(React) {
 	constructor(props) {
 		super(props);
 		this.state = {
-			gearList: [], gearItem: {}, redirect: true
+			gearList: [], gearItem: {}, loading: true, redirect: true
 		};
 	}
 
@@ -19,6 +19,7 @@ export default class GearListPage extends ParseReact.Component(React) {
 		const query = new Parse.Query('Gear');
 		query.find().then(results => {
 			this.setState({
+				loading: false,
 				gearList: results
 			});
 		});
@@ -28,18 +29,15 @@ export default class GearListPage extends ParseReact.Component(React) {
 		this.props.history.push(`${PAGE_EDIT_BASE}/${gearItem.id}`);
 	};
 
-	renderResults = (hasResults) => {
-
-
-	}
-
 	render() {
 		const {handleEditItem} = this;
-		const {gearList} = this.state;
+		const {gearList, loading} = this.state;
 		const hasResults = gearList.length > 0;
 
+		if (loading) return <div>Loading...</div>;
+
 		return (<div>
-			<h1>Gear</h1>
+			<h3>Gear</h3>
 			<Table responsive hover>
 				<thead>
 					<tr>
