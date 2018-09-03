@@ -37,7 +37,7 @@ export default class GearListPage extends ParseReact.Component(React) {
 		if (loading) return <div>Loading...</div>;
 
 		return (<div>
-			<h1>Gear</h1>
+			<h3>Gear</h3>
 			<Table responsive hover>
 				<thead>
 					<tr>

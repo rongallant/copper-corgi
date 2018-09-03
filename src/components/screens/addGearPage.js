@@ -39,7 +39,7 @@ export default class AddGearPage extends ParseReact.Component(React) {
 		const gearItem = {};
 
 		return (<div>
-			<h2>Add Gear</h2>
+			<h3>Add Gear</h3>
 			<AddGearForm
 				isEditForm={false}
 				history={history}

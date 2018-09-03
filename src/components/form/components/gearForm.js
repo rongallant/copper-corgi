@@ -59,8 +59,8 @@ export const GearForm = props => {
 			<Col md={3}>
 				<Button
 					block
+					outline
 					className="mr-3 mb-3"
-					color="secondary"
 					type="button"
 					onClick={handleReset}
 					disabled={(!dirty && _.isEmpty(errors)) || isSubmitting}>
