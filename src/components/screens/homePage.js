@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import {UserLoginForm} from '../users/components/loginForm'
+import UserLoginForm from '../users/components/loginForm'
 
 class HomePage extends Component {
 

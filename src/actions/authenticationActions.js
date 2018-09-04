@@ -9,12 +9,15 @@ export const checkUserAuthentication = () => {
 	}
 };
 
-export const authenticateUser = (username, password) => {
+export const authenticateUser = (dispatch, username, password) => {
 	console.log("authenticateUser", username, password);
-	Parse.User.logIn(username, password).then(user => {
-		return {type: AUTHENTICATE_USER, value: !!user};
-	}).catch(e => {
-		console.error(e);
-		throw new Error("Could not login.");
-	});
+	return dispatch => {
+		Parse.User.logIn(username, password).then(user => {
+			console.log('authenticateUser: value', user);
+			return {type: AUTHENTICATE_USER, value: !!user};
+		}).catch(e => {
+			console.error(e);
+			throw e;
+		})
+	};
 };

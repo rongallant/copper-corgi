@@ -34,7 +34,7 @@ const formConfig = {
 	},
 
 	handleSubmit: (values, {props}) => {
-		props.handleSubmit(values.username, values.password);
+		props.handleUserLogin(values.username, values.password);
 	},
 
 	displayName: 'UserLoginForm',
@@ -44,7 +44,8 @@ class Form extends Component {
 
 	render() {
 		const {
-			values, touched, errors, isSubmitting, handleCancel, handleChange, handleBlur, handleSubmit, dirty,
+			values, touched, errors, isSubmitting, handleCancel, handleChange,
+			handleBlur, handleSubmit, handleUserLogin, dirty,
 		} = this.props;
 		const {username, password} = values;
 
@@ -88,14 +89,14 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-	console.log()
 	return {
-		handleUserLogin: () => dispatch(authenticateUser())
+		handleUserLogin: () => dispatch(authenticateUser)
 	};
 };
 
-export const UserLoginForm = withFormik(formConfig)(Form);
-export default connect(mapStateToProps, mapDispatchToProps)(UserLoginForm);
+const UserLoginForm = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withFormik(formConfig)(Form));
 
-
-
+export default UserLoginForm;
