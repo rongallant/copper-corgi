@@ -14,7 +14,7 @@ export default class EditFormMenu extends Component {
 
 	render() {
 
-		const {handleDelete} = this.props;
+		const {handleDelete, handleReset} = this.props;
 
 		return (<Navbar light className="px-0">
 			<h3>Edit Gear</h3>
@@ -32,7 +32,11 @@ export default class EditFormMenu extends Component {
 							</NavLink>
 						</DropdownItem>
 						<DropdownItem>
-							Reset
+							<NavLink
+								onClick={handleReset}>
+								<i className="far fa-trash-alt"/>
+								Reset
+							</NavLink>
 						</DropdownItem>
 					</DropdownMenu>
 				</UncontrolledDropdown>

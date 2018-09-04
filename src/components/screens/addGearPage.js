@@ -24,7 +24,7 @@ export default class AddGearPage extends ParseReact.Component(React) {
 		gear.set("weight", weight);
 		gear.save()
 			.then((gear) => {
-				console.log('New great created with objectId: ' + gear.id);
+				console.log('New gear created with objectId: ' + gear.id);
 			}, (e) => {
 				console.error(e);
 				throw new Error("Error creating gear.");

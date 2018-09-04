@@ -1,10 +1,13 @@
 import React, {Component} from "react";
-import {Collapse, Nav, Navbar, NavbarBrand, NavItem, NavbarToggler} from "reactstrap";
+import {Collapse, Nav, Navbar, NavbarBrand, NavItem, NavbarToggler, NavLink as Link} from "reactstrap";
 import {NavLink} from "react-router-dom";
+import {connect} from "react-redux";
 
-import {PAGE_ADD, PAGE_LIST} from "../../App";
+import {PAGE_ADD, PAGE_HOME, PAGE_LIST} from "../../App";
+import {logout} from "../../services/authentication";
+import {checkUserAuthentication} from "../../actions/authenticationActions";
 
-export default class Header extends Component {
+class Header extends Component {
 
 	constructor(props) {
 		super(props);
@@ -19,9 +22,15 @@ export default class Header extends Component {
 		});
 	};
 
+	handleLogout = () => {
+		logout();
+		// this.props.history.push(PAGE_LIST);
+	};
+
 	render() {
-		const {toggleNavBar} = this;
+		const {handleLogout, toggleNavBar} = this;
 		const {navIsOpen} = this.state;
+		const {userAuthenticated} = this.props;
 
 		return (<header>
 			<Navbar expand="md" color="dark" dark>
@@ -35,7 +44,8 @@ export default class Header extends Component {
 				</NavbarBrand>
 				<NavbarToggler onClick={toggleNavBar}/>
 				<Collapse isOpen={navIsOpen} navbar>
-					<Nav className="ml-auto" navbar>
+
+					{userAuthenticated && <Nav className="ml-auto" navbar>
 						<NavItem>
 							<NavLink
 								className="nav-link"
@@ -52,9 +62,35 @@ export default class Header extends Component {
 								<i className="far fa-plus-square"/>
 								Add</NavLink>
 						</NavItem>
-					</Nav>
+						<NavItem>
+							<Link
+								onClick={handleLogout}>
+								Logout
+							</Link>
+						</NavItem>
+					</Nav>}
+
+					{!userAuthenticated && <Nav className="ml-auto" navbar>
+						<NavItem>
+							<NavLink
+								className="nav-link"
+								activeClassName="active"
+								to={PAGE_HOME}>
+								Login</NavLink>
+						</NavItem>
+					</Nav>}
+
 				</Collapse>
 			</Navbar>
 		</header>);
 	}
 }
+
+const mapStateToProps = state => {
+	console.log('Header.mapStateToProps', state);
+	return {
+		userAuthenticated: state.userAuthenticated, handleLogin: state.logOutUser
+	};
+};
+
+export default connect(mapStateToProps)(Header);

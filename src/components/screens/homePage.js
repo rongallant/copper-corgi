@@ -1,7 +1,17 @@
 import React, {Component} from "react";
 
-export default class HomePage extends Component {
+import {UserLoginForm} from '../users/components/loginForm'
+
+class HomePage extends Component {
+
 	render() {
-		return (<h3>Welcome home!</h3>)
+		const {handleUserLogin} = this.props;
+
+		return (<div>
+			<h3>Welcome home!</h3>
+			<UserLoginForm handleSubmit={handleUserLogin}/>
+		</div>)
 	}
 }
+
+export default HomePage;
