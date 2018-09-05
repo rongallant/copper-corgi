@@ -58,6 +58,8 @@ export default class Header extends Component {
 			return <Nav className="ml-auto" navbar>
 				<NavItem>
 					<NavLink
+						className="nav-link"
+						activeClassName="active"
 						to={PAGE_LOGIN}>
 						Login
 					</NavLink>

@@ -11,15 +11,14 @@ import EditGearPage from "./components/screens/editGearPage";
 import HomePage from "./components/screens/homePage";
 import GearListPage from "./components/screens/gearListPage";
 import UserSignUpPage from "./components/screens/userSignUpPage";
-import {isLoggedIn, login, logout} from "./services/authentication";
-import Redirect from "react-router-dom/es/Redirect";
+import LoginPage from "./components/screens/loginPage";
 
 const PARSE_APP_ID = 'BacPacTracApp';
 const PARSE_JS_KEY = 'BacPacTracAppJs';
 const PARSE_SERVER_URL = 'http://127.0.0.1:1337/parse';
 
 export const PAGE_HOME = "/";
-export const PAGE_LOGIN = "/";
+export const PAGE_LOGIN = "/login";
 export const PAGE_LIST = "/list";
 export const PAGE_ADD = "/add";
 export const PAGE_EDIT_BASE = "/edit";
@@ -73,11 +72,18 @@ class App extends Component {
 				/>
 				<Container>
 					<Switch>
-						<Route path={PAGE_USER_SIGN_UP}
+						<Route
+							path={PAGE_USER_SIGN_UP}
 							component={UserSignUpPage}/>
-						<Route exact path={PAGE_HOME}
-							render={(props) => <HomePage
+						<Route exact
+							path={PAGE_HOME}
+							component={HomePage}
+						/>
+						<Route
+							path={PAGE_LOGIN}
+							render={(props) => <LoginPage
 								{...props}
+								isAuthenticated={isAuthenticated}
 								updateAuthenticated={updateAuthenticated}
 								handleLogin={handleLogin}
 							/>}
