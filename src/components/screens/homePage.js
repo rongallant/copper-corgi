@@ -1,17 +1,15 @@
 import React, {Component} from "react";
 
-import UserLoginForm from '../users/components/loginForm'
+import {UserLoginForm} from "../users/components/loginForm";
 
-class HomePage extends Component {
+export default class HomePage extends Component {
 
 	render() {
-		const {handleUserLogin} = this.props;
-
 		return (<div>
 			<h3>Welcome home!</h3>
-			<UserLoginForm handleSubmit={handleUserLogin}/>
+			<UserLoginForm
+				{...this.props}
+			/>
 		</div>)
 	}
 }
-
-export default HomePage;

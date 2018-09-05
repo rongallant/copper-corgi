@@ -67,7 +67,7 @@ const Form = props => {
 
 export const UserSignUpForm = withFormik({
 
-	mapPropsToValues: (props) => {
+	mapPropsToValues: () => {
 		return {username: "", email: "", password: "", verifyPassword: ""};
 	},
 

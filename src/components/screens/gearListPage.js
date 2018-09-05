@@ -3,8 +3,8 @@ import {Table} from 'reactstrap';
 import Parse from "parse/node";
 import ParseReact from "parse-react";
 
+import {displayUnit} from "../../services/localStorageService";
 import {PAGE_EDIT_BASE} from "../../App";
-import {displayUnit} from "../../utilities/displayUtils";
 
 export default class GearListPage extends ParseReact.Component(React) {
 

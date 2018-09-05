@@ -1,14 +1,14 @@
 import React, {Component} from "react";
 import {withFormik} from "formik";
 import {Button, Col, Row} from "reactstrap";
+import Redirect from "react-router-dom/es/Redirect";
+import Parse from "parse/node";
 
 import {validateRequired} from "../../common/formValidationRules";
 import UserNameField from "./fields/userNameField";
 import PasswordField from "./fields/passwordField";
-import {login} from "../../../services/authentication";
+import {isLoggedIn} from "../../../services/authentication";
 import {PAGE_LIST} from "../../../App";
-import connect from "react-redux/es/connect/connect";
-import {authenticateUser} from "../../../actions/authenticationActions";
 
 const formConfig = {
 
@@ -29,12 +29,31 @@ const formConfig = {
 		if (isPassword) {
 			errors.password = isPassword;
 		}
-
 		return errors;
 	},
 
-	handleSubmit: (values, {props}) => {
-		props.handleUserLogin(values.username, values.password);
+	handleSubmit: (values, {resetForm, setErrors, setStatus, setSubmitting}) => {
+		const {username, password} = values;
+		Parse.User.logIn(username, password)
+			.then(user => {
+				if (!!user) {
+					console.log("handleSubmit: Logged in", username);
+					localStorage.setItem("userAuth", "true");
+					setStatus({success: true});
+				} else {
+					console.log("handleSubmit: Not logged in");
+					localStorage.removeItem("userAuth");
+					setStatus({success: false});
+				}
+				console.log("handleSubmit: Logged in", isLoggedIn());
+			})
+			.catch(e => {
+				localStorage.removeItem("userAuth");
+				console.error(e);
+				setStatus({success: false});
+				throw new Error("Could not login.");
+			});
+		setSubmitting(false);
 	},
 
 	displayName: 'UserLoginForm',
@@ -44,10 +63,14 @@ class Form extends Component {
 
 	render() {
 		const {
-			values, touched, errors, isSubmitting, handleCancel, handleChange,
-			handleBlur, handleSubmit, handleUserLogin, dirty,
+			values, status, touched, errors, isSubmitting, updateAuthenticated, handleChange, handleBlur, handleSubmit
 		} = this.props;
 		const {username, password} = values;
+
+		if (status) {
+			updateAuthenticated(true);
+			return <Redirect to={PAGE_LIST}/>
+		}
 
 		return (<form id="userLogin"
 			onSubmit={handleSubmit}
@@ -82,21 +105,4 @@ class Form extends Component {
 	}
 }
 
-const mapStateToProps = state => {
-	return {
-		userAuthenticated: state.userAuthenticated
-	};
-};
-
-const mapDispatchToProps = dispatch => {
-	return {
-		handleUserLogin: () => dispatch(authenticateUser)
-	};
-};
-
-const UserLoginForm = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(withFormik(formConfig)(Form));
-
-export default UserLoginForm;
+export const UserLoginForm = withFormik(formConfig)(Form);
