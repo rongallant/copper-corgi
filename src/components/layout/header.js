@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Collapse, Nav, Navbar, NavbarBrand, NavItem, NavbarToggler, NavLink as Link} from "reactstrap";
+import {Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink as Link, UncontrolledCollapse} from "reactstrap";
 import {NavLink} from "react-router-dom";
 
 import {PAGE_ADD, PAGE_HOME, PAGE_LIST, PAGE_LOGIN} from "../../App";
@@ -7,23 +7,10 @@ import {logout} from "../../services/authentication";
 
 export default class Header extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			navIsOpen: false,
-		}
-	}
-
 	handleLogout = (e) => {
 		console.log('App.handleLogout');
 		e.preventDefault();
 		this.props.updateAuthenticated(logout())
-	};
-
-	toggleNavBar = () => {
-		this.setState({
-			navIsOpen: !this.state.navIsOpen
-		});
 	};
 
 	renderMenu = (authenticated) => {
@@ -69,9 +56,8 @@ export default class Header extends Component {
 	};
 
 	render() {
-		const {renderMenu, toggleNavBar} = this;
+		const {renderMenu} = this;
 		const {isAuthenticated} = this.props;
-		const {navIsOpen} = this.state;
 
 		return (<header>
 			<Navbar expand="md" color="dark" dark>
@@ -83,10 +69,10 @@ export default class Header extends Component {
 						height={55}
 						className="img-fluid"/>
 				</NavbarBrand>
-				<NavbarToggler onClick={toggleNavBar}/>
-				<Collapse isOpen={navIsOpen} navbar>
+				<NavbarToggler id="headerToggler"/>
+				<UncontrolledCollapse toggler="#headerToggler" navbar>
 					{renderMenu(isAuthenticated)}
-				</Collapse>
+				</UncontrolledCollapse>
 			</Navbar>
 		</header>);
 	}

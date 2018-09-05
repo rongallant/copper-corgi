@@ -11,6 +11,7 @@ export default class PasswordField extends Component {
 			id="password"
 			invalid={errors[id] && touched[id]}
 			label="Password"
+			type="password"
 			maxLength={128}
 		/>);
 	}

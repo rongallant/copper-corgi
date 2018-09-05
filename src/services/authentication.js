@@ -26,7 +26,8 @@ export const login = (username, password) => {
 	// console.log('authentication.isLoggedIn: authenticated', Parse.User.current().authenticated());
 	// return Parse.User.current().authenticated();
 }, logout = () => {
-	Parse.User.logOut();
+	const logoutPromise = Parse.User.logOut();
 	localStorage.removeItem("userAuth");
+	console.info("logout promise", logoutPromise);
 	return false;
 };

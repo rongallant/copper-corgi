@@ -1,22 +1,20 @@
 import React, {Component} from "react";
 import {withFormik} from "formik";
 import {Button, Col, Row} from "reactstrap";
-import Redirect from "react-router-dom/es/Redirect";
 import Parse from "parse/node";
+import {Redirect} from "react-router-dom";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
 import {validateRequired} from "../../common/formValidationRules";
 import UserNameField from "./fields/userNameField";
 import PasswordField from "./fields/passwordField";
-import {isLoggedIn} from "../../../services/authentication";
-import {PAGE_LIST} from "../../../App";
+import {PAGE_LIST, PAGE_USER_SIGN_UP} from "../../../App";
 
 const formConfig = {
-
-	mapPropsToValues: (props) => {
-		console.log('mapPropsToValues', props);
+	mapPropsToValues: () => {
 		return {username: "", password: ""};
 	},
-
 	validate: values => {
 		let errors = {};
 
@@ -31,13 +29,11 @@ const formConfig = {
 		}
 		return errors;
 	},
-
 	handleSubmit: (values, {resetForm, setErrors, setStatus, setSubmitting}) => {
 		const {username, password} = values;
 		Parse.User.logIn(username, password)
 			.then(user => {
 				if (!!user) {
-					console.log("handleSubmit: Logged in", username);
 					localStorage.setItem("userAuth", "true");
 					setStatus({success: true});
 				} else {
@@ -45,7 +41,6 @@ const formConfig = {
 					localStorage.removeItem("userAuth");
 					setStatus({success: false});
 				}
-				console.log("handleSubmit: Logged in", isLoggedIn());
 			})
 			.catch(e => {
 				localStorage.removeItem("userAuth");
@@ -55,15 +50,21 @@ const formConfig = {
 			});
 		setSubmitting(false);
 	},
-
 	displayName: 'UserLoginForm',
 };
 
 class Form extends Component {
 
+	handleSignUp = (e) => {
+		e.preventDefault();
+		return this.props.history.push(PAGE_USER_SIGN_UP);
+	};
+
 	render() {
+		const {handleSignUp} = this;
 		const {
-			values, status, touched, errors, isSubmitting, updateAuthenticated, handleChange, handleBlur, handleSubmit
+			values, dirty, status, touched, errors, isSubmitting,
+			updateAuthenticated, handleChange, handleBlur, handleSubmit
 		} = this.props;
 		const {username, password} = values;
 
@@ -76,6 +77,7 @@ class Form extends Component {
 			onSubmit={handleSubmit}
 			noValidate>
 			<UserNameField
+				autoComplete="username"
 				value={username}
 				onChange={handleChange}
 				onBlur={handleBlur}
@@ -83,20 +85,31 @@ class Form extends Component {
 				touched={touched}
 			/>
 			<PasswordField
+				autoComplete="current-password"
 				value={password}
 				onChange={handleChange}
 				onBlur={handleBlur}
 				errors={errors}
 				touched={touched}
 			/>
-			<Row>
-				<Col sm={4}>
+			<Row className="justify-content-end">
+				<Col sm={3}>
 					<Button
 						block
-						className="mr-3"
+						className="mr-3 mb-3"
+						color="link"
+						disabled={isSubmitting}
+						onClick={handleSignUp}>
+						Create Account
+					</Button>
+				</Col>
+				<Col sm={3}>
+					<Button
+						block
+						className="mr-3 mb-3"
 						color="primary"
 						type="submit"
-						disabled={isSubmitting}>
+						disabled={!dirty || !_.isEmpty(errors) || isSubmitting}>
 						Login
 					</Button>
 				</Col>
@@ -104,5 +117,18 @@ class Form extends Component {
 		</form>);
 	}
 }
+
+Form.propTypes = {
+	values: PropTypes.object.isRequired,
+	touched: PropTypes.object,
+	errors: PropTypes.object,
+	isSubmitting: PropTypes.bool,
+	handleCancel: PropTypes.func,
+	handleChange: PropTypes.func,
+	handleBlur: PropTypes.func,
+	handleSubmit: PropTypes.func,
+	handleReset: PropTypes.func,
+	dirty: PropTypes.bool
+};
 
 export const UserLoginForm = withFormik(formConfig)(Form);

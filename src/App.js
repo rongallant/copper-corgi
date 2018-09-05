@@ -16,6 +16,7 @@ import LoginPage from "./components/screens/loginPage";
 const PARSE_APP_ID = 'BacPacTracApp';
 const PARSE_JS_KEY = 'BacPacTracAppJs';
 const PARSE_SERVER_URL = 'http://127.0.0.1:1337/parse';
+const USER_AUTH_KEY = "userAuth";
 
 export const PAGE_HOME = "/";
 export const PAGE_LOGIN = "/login";
@@ -41,15 +42,10 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		console.log('Component DID MOUNT!');
-		const userAuth = localStorage.getItem("userAuth");
+		const userAuth = localStorage.getItem(USER_AUTH_KEY);
 		this.setState({
 			isAuthenticated: !!userAuth
 		});
-	}
-
-	static getDerivedStateFromProps(props, state) {
-		return null;
 	}
 
 	updateAuthenticated = (value) => {
@@ -61,7 +57,6 @@ class App extends Component {
 	render() {
 		const {handleLogin, updateAuthenticated} = this;
 		const {isAuthenticated} = this.state;
-		console.log("App: isAuthenticated", isAuthenticated);
 
 		return (<Router>
 

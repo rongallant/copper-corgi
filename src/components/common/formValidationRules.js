@@ -2,15 +2,15 @@
 * Form Validation Rule Library
 * */
 
-const email_pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const username_pattern = /^\w{1,}\d{0,}$/; // Only numbers and letters.
+const email_pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const username_pattern = /^\w+\d*$/; // Only numbers and letters.
 const password_pattern = /^([\D])\w+([\d])$/; // Must have upper/lower/number
 
 export const validateRequired = value => {
 	if (!value) {
 		return 'Required.';
 	}
-	return false;
+	return null;
 };
 
 export const validateUsername = (value, required) => {
@@ -29,7 +29,7 @@ export const validateUsername = (value, required) => {
 	if (!expression.exec(value)) {
 		return 'Can only contain letters and numbers .'; // Pattern
 	}
-	return true;
+	return null;
 };
 
 export const validatePassword = (value, required) => {
@@ -55,7 +55,7 @@ export const validateSamePassword = (pass1, pass2) => {
 	if (pass1 !== pass2) {
 		return 'Passwords do not match.'
 	}
-	return false;
+	return null;
 };
 
 export const validateEmail = (value, required) => {
@@ -71,5 +71,5 @@ export const validateEmail = (value, required) => {
 	if (!expression.exec(value)) {
 		return 'Must be a valid email.'; // Pattern
 	}
-	return false;
+	return null;
 };

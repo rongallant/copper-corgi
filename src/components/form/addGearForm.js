@@ -4,7 +4,7 @@ import {GearForm} from "./components/gearForm";
 
 export const AddGearForm = withFormik({
 
-	mapPropsToValues: (props) => {
+	mapPropsToValues: () => {
 		return {category: "", name: "", description: "", weight: ""};
 	},
 

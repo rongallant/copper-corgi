@@ -11,6 +11,7 @@ export default class VerifyPasswordField extends Component {
 			id="verifyPassword"
 			invalid={errors[id] && touched[id]}
 			label="Verify Password"
+			type="password"
 			maxLength={128}
 		/>);
 	}

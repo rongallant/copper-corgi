@@ -50,9 +50,9 @@ export const GearForm = props => {
 				<Button
 					block
 					className="mr-3 mb-3"
+					color="link"
 					type="button"
-					onClick={handleCancel}
-					outline>
+					onClick={handleCancel}>
 					Cancel
 				</Button>
 			</Col>
@@ -63,7 +63,7 @@ export const GearForm = props => {
 					className="mr-3 mb-3"
 					type="button"
 					onClick={handleReset}
-					disabled={(!dirty && _.isEmpty(errors)) || isSubmitting}>
+					disabled={!dirty || isSubmitting}>
 					Reset
 				</Button>
 			</Col>
@@ -73,7 +73,7 @@ export const GearForm = props => {
 					className="mr-3"
 					color="primary"
 					type="submit"
-					disabled={isSubmitting}>
+					disabled={!dirty || !_.isEmpty(errors) || isSubmitting}>
 					Submit
 				</Button>
 			</Col>
