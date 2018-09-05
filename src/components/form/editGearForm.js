@@ -1,7 +1,6 @@
 import {withFormik} from "formik";
 
 import {GearForm} from "./components/gearForm";
-// import Parse from "parse/node";
 
 export const EditGearForm = withFormik({
 
