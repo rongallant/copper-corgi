@@ -10,7 +10,7 @@ export default class GearListPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			gearList: null, gearItem: {}, loading: true, redirect: true
+			gearList: [], gearItem: {}, loading: true, redirect: true
 		};
 	}
 
@@ -27,9 +27,13 @@ export default class GearListPage extends React.Component {
 	componentDidMount() {
 		db.collection('gear-items').get()
 			.then((snapshot) => {
-				this.setState({
-					loading: false, gearList: snapshot
+				const gearList = [];
+				snapshot.forEach(doc => {
+					const newItem = doc.data();
+					newItem.id = doc.id;
+					gearList.push(newItem);
 				});
+				this.setState({gearList, loading: false});
 			})
 			.catch((err) => {
 				console.log('Error getting documents', err);
@@ -47,6 +51,8 @@ export default class GearListPage extends React.Component {
 		if (loading) return <div>Loading...</div>;
 
 		const hasResults = gearList.length > 0;
+		console.log('gearList', gearList);
+
 		return (<div>
 			<h3>Gear</h3>
 			<Table responsive hover>
@@ -59,19 +65,21 @@ export default class GearListPage extends React.Component {
 					</tr>
 				</thead>
 				<tbody>
-					{gearList.forEach((gear) => {
-						const {name, category, weight} = gear.data();
-						return (<tr key={name} onClick={() => handleEditItem(gear)}>
-							<th scope="row"> </th>
+
+					{!hasResults && (<tr>
+						<th colSpan={5} className="text-center">You have no gear!</th>
+					</tr>)}
+
+					{hasResults && gearList.forEach((gear, index) => {
+						const {id, name, category, weight} = gear;
+						return (<tr key={id} onClick={() => handleEditItem(gear)}>
+							<th scope="row">{index + 1}</th>
 							<td>{category}</td>
 							<td>{name}</td>
 							<td>{displayUnit(weight)}</td>
 						</tr>)
 					})}
 
-					{!hasResults && (<tr>
-						<th colSpan={5} className="text-center">You have no gear!</th>
-					</tr>)}
 				</tbody>
 			</Table>
 		</div>);
