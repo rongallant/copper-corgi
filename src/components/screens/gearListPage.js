@@ -4,7 +4,6 @@ import {Table} from 'reactstrap';
 import {displayUnit} from "../../services/localStorageService";
 import {db, PAGE_EDIT_BASE} from "../../App";
 
-
 export default class GearListPage extends React.Component {
 
 	constructor(props) {
@@ -13,16 +12,6 @@ export default class GearListPage extends React.Component {
 			gearList: [], gearItem: {}, loading: true, redirect: true
 		};
 	}
-
-	// observe() {
-	// 	const query = new Parse.Query('Gear');
-	// 	query.find().then(results => {
-	// 		this.setState({
-	// 			loading: false,
-	// 			gearList: results
-	// 		});
-	// 	});
-	// }
 
 	componentDidMount() {
 		db.collection('gear-items').get()
@@ -36,7 +25,8 @@ export default class GearListPage extends React.Component {
 				this.setState({gearList, loading: false});
 			})
 			.catch((err) => {
-				console.log('Error getting documents', err);
+				console.error('Error getting documents', err);
+				throw new Error("Error getting gear.");
 			});
 	}
 
@@ -51,7 +41,6 @@ export default class GearListPage extends React.Component {
 		if (loading) return <div>Loading...</div>;
 
 		const hasResults = gearList.length > 0;
-		console.log('gearList', gearList);
 
 		return (<div>
 			<h3>Gear</h3>
@@ -70,7 +59,7 @@ export default class GearListPage extends React.Component {
 						<th colSpan={5} className="text-center">You have no gear!</th>
 					</tr>)}
 
-					{hasResults && gearList.forEach((gear, index) => {
+					{hasResults && gearList.map((gear, index) => {
 						const {id, name, category, weight} = gear;
 						return (<tr key={id} onClick={() => handleEditItem(gear)}>
 							<th scope="row">{index + 1}</th>
