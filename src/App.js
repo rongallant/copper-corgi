@@ -3,6 +3,7 @@ import {Container} from 'reactstrap';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {PrivateRoute} from './security/privateRoute';
 import Parse from "parse/node";
+import firebase from "firebase";
 
 import AddGearPage from './components/screens/addGearPage'
 import Header from "./components/layout/header";
@@ -12,6 +13,7 @@ import HomePage from "./components/screens/homePage";
 import GearListPage from "./components/screens/gearListPage";
 import UserSignUpPage from "./components/screens/userSignUpPage";
 import LoginPage from "./components/screens/loginPage";
+
 
 const PARSE_APP_ID = 'BacPacTracApp';
 const PARSE_JS_KEY = 'BacPacTracAppJs';
@@ -25,6 +27,32 @@ export const PAGE_ADD = "/add";
 export const PAGE_EDIT_BASE = "/edit";
 export const PAGE_EDIT_PATH = `${PAGE_EDIT_BASE}/:key`;
 export const PAGE_USER_SIGN_UP = "/signup";
+
+
+// Initialize Firebase
+const config = {
+	apiKey: "AIzaSyB3w1N8ycr7kql3UvICypsEk2ZF7aAymdo",
+	authDomain: "bacpactrac.firebaseapp.com",
+	databaseURL: "https://bacpactrac.firebaseio.com",
+	projectId: "bacpactrac",
+	storageBucket: "bacpactrac.appspot.com",
+	messagingSenderId: "373362418095"
+};
+firebase.initializeApp(config);
+console.log("Initialized Firebase app", firebase);
+
+
+
+const firestore = firebase.firestore();
+const settings = {/* your settings... */ timestampsInSnapshots: true};
+firestore.settings(settings);
+export const db = firestore;
+
+
+// query test
+// firebase.database().ref('/gear-items').once('value').then(function(snapshot) {
+// 	console.log(" Firebase: gearItems", snapshot.val());
+// });
 
 Parse.initialize(PARSE_APP_ID, PARSE_JS_KEY);
 Parse.serverURL = PARSE_SERVER_URL;

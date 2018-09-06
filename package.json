@@ -30,6 +30,8 @@
 	},
 	"devDependencies": {
 		"@fortawesome/fontawesome-free": "^5.3.1",
+		"firebase": "^5.4.2",
+		"firebase-auth": "^0.1.2",
 		"sass": "^1.13.1"
 	}
 }
