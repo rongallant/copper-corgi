@@ -9,3 +9,13 @@
 .bg-dark {
   background-color: #76776d !important;
 }
+
+.btn,
+.table.table-hover tr {
+  cursor: pointer;
+}
+
+.btn.disabled {
+  cursor: default;
+}
+
