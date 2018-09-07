@@ -5,7 +5,6 @@ import Parse from "parse/node";
 import {Redirect} from "react-router-dom";
 import PropTypes from "prop-types";
 import _ from "lodash";
-
 import {validateRequired} from "../../common/formValidationRules";
 import UserNameField from "./fields/userNameField";
 import PasswordField from "./fields/passwordField";

@@ -48,9 +48,9 @@ export default class GearListPage extends React.Component {
 				<thead>
 					<tr>
 						<th scope="col">#</th>
-						<th scope="col">Category</th>
 						<th scope="col">Name</th>
 						<th scope="col">Weight</th>
+						<th scope="col">Category</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -63,9 +63,9 @@ export default class GearListPage extends React.Component {
 						const {id, name, category, weight} = gear;
 						return (<tr key={id} onClick={() => handleEditItem(gear)}>
 							<th scope="row">{index + 1}</th>
-							<td>{category}</td>
 							<td>{name}</td>
 							<td>{displayUnit(weight)}</td>
+							<td>{category}</td>
 						</tr>)
 					})}
 

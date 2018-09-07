@@ -6,10 +6,9 @@ export const EditGearForm = withFormik({
 
 	mapPropsToValues: (props) => {
 		if (props.gearItem) {
-			const {id, attributes} = props.gearItem;
-			return {id, ...attributes};
+			return props.gearItem;
 		}
-		return {id: "", category: "", name: "", description: "", weight: ""};
+		return {};
 	},
 
 	validate: values => {

@@ -4,7 +4,7 @@ import Parse from "parse/node";
 import confirm from 'reactstrap-confirm';
 
 import {EditGearForm} from "../form/editGearForm";
-import {PAGE_EDIT_PATH, PAGE_LIST} from "../../App";
+import {db, PAGE_EDIT_PATH, PAGE_LIST} from "../../App";
 import EditFormMenu from "../form/components/editFormMenu";
 
 export default class EditGearPage extends ParseReact.Component(React) {
@@ -24,13 +24,16 @@ export default class EditGearPage extends ParseReact.Component(React) {
 		const {match: {path, params: {key}}} = this.props;
 
 		if (PAGE_EDIT_PATH === path) {
-			const query = new Parse.Query('Gear');
-			query.equalTo("objectId", key);
-			query.first().then(result => {
-				this.setState({
-					gearItem: result, loading: false
+			console.log('key', key);
+			db.collection('gear-items').doc(key).get()
+				.then((snapshot) => {
+					console.log('snapshot', snapshot.data());
+					this.setState({gearItem: snapshot.data(), loading: false});
+				})
+				.catch((err) => {
+					console.error('Error getting document', err);
+					throw new Error("Error getting gear.");
 				});
-			});
 		} else {
 			this.setState({
 				loading: false
@@ -63,21 +66,21 @@ export default class EditGearPage extends ParseReact.Component(React) {
 		}
 	};
 
-	handleSubmit = (values, {props}) => {
-		const {id, category, name, description, weight} = values;
+	handleSubmit = (values) => {
+		// const {id, category, name, description, weight} = values;
 
-		const query = new Parse.Query('Gear');
-		query.equalTo("objectId", id);
-		query.first().then(gear => {
-			gear.set("category", category);
-			gear.set("name", name);
-			gear.set("description", description);
-			gear.set("weight", weight);
-			gear.save();
-		}).catch(e => {
-			console.error(e);
-			throw new Error("Error updating gear.");
-		});
+		// const query = new Parse.Query('Gear');
+		// query.equalTo("objectId", id);
+		// query.first().then(gear => {
+		// 	gear.set("category", category);
+		// 	gear.set("name", name);
+		// 	gear.set("description", description);
+		// 	gear.set("weight", weight);
+		// 	gear.save();
+		// }).catch(e => {
+		// 	console.error(e);
+		// 	throw new Error("Error updating gear.");
+		// });
 
 		this.props.history.push(PAGE_LIST); // Go to list
 	};
@@ -86,7 +89,6 @@ export default class EditGearPage extends ParseReact.Component(React) {
 		const {handleCancel, handleDelete, handleSubmit} = this;
 		const {history} = this.props;
 		const {gearItem, loading} = this.state;
-
 		if (loading) return <div>Loading...</div>;
 
 		return (<div>
