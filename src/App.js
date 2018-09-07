@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Container} from 'reactstrap';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {PrivateRoute} from './security/privateRoute';
 import Parse from "parse/node";
@@ -13,6 +12,7 @@ import HomePage from "./components/screens/homePage";
 import GearListPage from "./components/screens/gearListPage";
 import UserSignUpPage from "./components/screens/userSignUpPage";
 import LoginPage from "./components/screens/loginPage";
+import ErrorBoundary from './components/common/error-handler/errorBoundary';
 
 
 const PARSE_APP_ID = 'BacPacTracApp';
@@ -40,7 +40,6 @@ const config = {
 };
 firebase.initializeApp(config);
 console.log("Initialized Firebase app", firebase);
-
 
 
 const firestore = firebase.firestore();
@@ -93,7 +92,7 @@ class App extends Component {
 					isAuthenticated={isAuthenticated}
 					updateAuthenticated={updateAuthenticated}
 				/>
-				<Container>
+				<ErrorBoundary>
 					<Switch>
 						<Route
 							path={PAGE_USER_SIGN_UP}
@@ -115,7 +114,7 @@ class App extends Component {
 						<PrivateRoute path={PAGE_ADD} component={AddGearPage}/>
 						<PrivateRoute path={PAGE_EDIT_PATH} component={EditGearPage}/>
 					</Switch>
-				</Container>
+				</ErrorBoundary>
 				<Footer/>
 			</div>
 		</Router>);

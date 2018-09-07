@@ -27,7 +27,7 @@ export const AddGearForm = withFormik({
 	},
 
 	handleSubmit: (values, {props, setStatus}) => {
-		props.handleSubmit(values, setStatus);
+		props.handleAddGear(values, setStatus);
 	},
 
 	displayName: 'AddGearForm',

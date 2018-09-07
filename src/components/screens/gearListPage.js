@@ -30,12 +30,12 @@ export default class GearListPage extends React.Component {
 			});
 	}
 
-	handleEditItem = (gearItem) => {
+	handleEditGearLink = (gearItem) => {
 		this.props.history.push(`${PAGE_EDIT_BASE}/${gearItem.id}`);
 	};
 
 	render() {
-		const {handleEditItem} = this;
+		const {handleEditGearLink} = this;
 		const {gearList, loading} = this.state;
 
 		if (loading) return <div>Loading...</div>;
@@ -61,7 +61,7 @@ export default class GearListPage extends React.Component {
 
 					{hasResults && gearList.map((gear, index) => {
 						const {id, name, category, weight} = gear;
-						return (<tr key={id} onClick={() => handleEditItem(gear)}>
+						return (<tr key={id} onClick={() => handleEditGearLink(gear)}>
 							<th scope="row">{index + 1}</th>
 							<td>{name}</td>
 							<td>{displayUnit(weight)}</td>

@@ -30,7 +30,7 @@ export const EditGearForm = withFormik({
 	},
 
 	handleSubmit: (values, {props}) => {
-		props.handleSubmit(values, props);
+		props.handleUpdateGear(values, props);
 	},
 
 	displayName: 'EditGearForm',
