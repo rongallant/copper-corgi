@@ -13,8 +13,7 @@ import {PAGE_LIST} from "../../../App";
 const formConfig = {
 	mapPropsToValues: () => {
 		return {username: "", password: ""};
-	},
-	validate: values => {
+	}, validate: values => {
 		let errors = {};
 		const isUsername = validateRequired(values.username);
 		if (isUsername) {
@@ -25,12 +24,17 @@ const formConfig = {
 			errors.password = isPassword;
 		}
 		return errors;
-	},
-	handleSubmit: (values, {props, setFormikState, setSubmitting, setErrors}) => {
+	}, handleSubmit: async (values, {props, setFormikState, setSubmitting, setErrors}) => {
 		// INFO How to deal with error messages.
-		const {username, password} = values;
-		// TODO const success = handleUserLogin
-		props.handleUserLogin(username, password, props.updateAuthenticated, setFormikState, setErrors);
+		try {
+			setFormikState({loading: true});
+			const {username, password} = values;
+			await props.handleUserLogin(username, password, props.updateAuthenticated);
+			setFormikState({success: true});
+		} catch (error) {
+			setFormikState({success: false, loading: false});
+			setErrors({formError: error.message});
+		}
 		setSubmitting(false);
 	}, displayName: 'UserLoginForm',
 };
@@ -43,19 +47,21 @@ class Form extends Component {
 
 	render() {
 		const {
-			values, dirty, touched, errors, isSubmitting, updateAuthenticated, handleChange, handleBlur, handleSignUp, handleSubmit
+			values: {username, password}, dirty, touched, errors, loading, success, isSubmitting, handleChange, handleBlur, handleSignUp, handleSubmit
 		} = this.props;
-		const {username, password} = values;
 
-		if (errors.success) {
-			updateAuthenticated(true);
+		if (success === true) {
 			return <Redirect to={PAGE_LIST}/>
 		}
 
 		return (<form id="userLogin" onSubmit={handleSubmit} noValidate>
+			<h3>Login</h3>
 
 			{this.showErrors(errors)}
 
+			{loading && <div>Loading...</div>}
+
+			{!loading && <div>
 			<UserNameField
 				autoComplete="username"
 				value={username}
@@ -94,6 +100,7 @@ class Form extends Component {
 					</Button>
 				</Col>
 			</Row>
+			</div>}
 		</form>);
 	}
 }

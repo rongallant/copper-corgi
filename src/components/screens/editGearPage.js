@@ -10,7 +10,7 @@ export default class EditGearPage extends Component {
 
 	constructor(props) {
 		super(props);
-		this._handleDeleteGear = this._handleDeleteGear.bind(this);
+		this.handleDeleteGear = this.handleDeleteGear.bind(this);
 		this.state = {
 			gearItem: {},
 			error: null,
@@ -53,7 +53,7 @@ export default class EditGearPage extends Component {
 		this.props.history.push(PAGE_LIST);
 	};
 
-	async _handleDeleteGear(id) {
+	async handleDeleteGear(id) {
 		let result = await confirm({
 			title: 'Warning',
 			message: 'Are you sure you want to delete?',
@@ -68,7 +68,7 @@ export default class EditGearPage extends Component {
 				})
 				.catch(e => {
 					console.error(e);
-					this.state({
+					this.setState({
 						error: "Could not delete gear."
 					});
 				});
@@ -90,7 +90,7 @@ export default class EditGearPage extends Component {
 	};
 
 	render() {
-		const {handleCancel, _handleDeleteGear, handleUpdateGear} = this;
+		const {handleCancel, handleDeleteGear, handleUpdateGear} = this;
 		const {history} = this.props;
 		const {gearItem, loading, error} = this.state;
 
@@ -101,7 +101,7 @@ export default class EditGearPage extends Component {
 		return (<Container>
 			<EditFormMenu
 				gearId={gearItem.id}
-				handleDeleteGear={_handleDeleteGear}/>
+				handleDeleteGear={handleDeleteGear}/>
 			<EditGearForm
 				isEditForm={true}
 				history={history}
