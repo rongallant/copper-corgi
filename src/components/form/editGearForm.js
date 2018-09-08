@@ -3,37 +3,28 @@ import {withFormik} from "formik";
 import {GearForm} from "./components/gearForm";
 
 export const EditGearForm = withFormik({
-
 	mapPropsToValues: (props) => {
 		if (props.gearItem) {
-			const {id, attributes} = props.gearItem;
-			return {id, ...attributes};
+			return props.gearItem;
 		}
-		return {id: "", category: "", name: "", description: "", weight: ""};
+		return {};
 	},
-
 	validate: values => {
 		let errors = {};
-
 		if (!values.category) {
 			errors.category = 'Required';
 		}
-
 		if (!values.name) {
 			errors.name = 'Required';
 		}
-
 		if (!values.weight) {
 			errors.weight = 'Required';
 		}
-
 		return errors;
 	},
-
-	handleSubmit: (values, {props}) => {
-		props.handleSubmit(values, props);
+	handleSubmit: (values, {props, setSubmitting, setErrors}) => {
+		props.handleUpdateGear(values, props, setErrors);
+		setSubmitting(false);
 	},
-
 	displayName: 'EditGearForm',
-
 })(GearForm);

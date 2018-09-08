@@ -1,48 +1,59 @@
-import React from "react";
-import ParseReact from "parse-react";
-import Parse from "parse/node";
+import React, {Component} from "react";
+import {Container} from "reactstrap";
 import confirm from 'reactstrap-confirm';
 
 import {EditGearForm} from "../form/editGearForm";
-import {PAGE_EDIT_PATH, PAGE_LIST} from "../../App";
+import {db, PAGE_LIST} from "../../App";
 import EditFormMenu from "../form/components/editFormMenu";
 
-export default class EditGearPage extends ParseReact.Component(React) {
+export default class EditGearPage extends Component {
 
 	constructor(props) {
 		super(props);
-		this.handleDelete = this.handleDelete.bind(this);
+		this._handleDeleteGear = this._handleDeleteGear.bind(this);
 		this.state = {
-			loading: true, gearItem: null
+			gearItem: {},
+			error: null,
+			loading: true
 		};
 	}
 
-	observe(nextProps, nextState) {
-	}
-
 	componentDidMount() {
-		const {match: {path, params: {key}}} = this.props;
-
-		if (PAGE_EDIT_PATH === path) {
-			const query = new Parse.Query('Gear');
-			query.equalTo("objectId", key);
-			query.first().then(result => {
+		const gearId = this.props.match.params.key;
+		db.collection('gear-items').doc(gearId).get()
+			.then(snapshot => {
+				// IMPORTANT: Add ID to GearItem
+				const gearItem = snapshot.data();
+				if (gearItem) {
+					gearItem.id = snapshot.id;
+					this.setState({
+						error: null,
+						gearItem,
+						loading: false
+					});
+				} else {
+					this.setState({
+						error: "GearItem not found.",
+						gearItem: null,
+						loading: false
+					});
+				}
+			})
+			.catch((err) => {
+				console.error(err);
 				this.setState({
-					gearItem: result, loading: false
+					error: "Error getting gear.",
+					gearItem: null,
+					loading: false
 				});
 			});
-		} else {
-			this.setState({
-				loading: false
-			});
-		}
 	}
 
 	handleCancel = () => {
 		this.props.history.push(PAGE_LIST);
 	};
 
-	async handleDelete(key) {
+	async _handleDeleteGear(id) {
 		let result = await confirm({
 			title: 'Warning',
 			message: 'Are you sure you want to delete?',
@@ -51,55 +62,53 @@ export default class EditGearPage extends ParseReact.Component(React) {
 			cancelColor: 'link'
 		});
 		if (result) {
-			const query = new Parse.Query('Gear');
-			query.find("objectId", key);
-			query.first().then(gear => {
-				gear.destroy();
-				this.props.history.push(PAGE_LIST); // Go to list
-			}).catch(e => {
-				console.error(e);
-				throw new Error(`Error deleting: ${key}`);
-			});
+			db.collection('gear-items').doc(id)
+				.delete()
+				.then(() => {
+				})
+				.catch(e => {
+					console.error(e);
+					this.state({
+						error: "Could not delete gear."
+					});
+				});
+			this.props.history.push(PAGE_LIST);
 		}
 	};
 
-	handleSubmit = (values, {props}) => {
-		const {id, category, name, description, weight} = values;
-
-		const query = new Parse.Query('Gear');
-		query.equalTo("objectId", id);
-		query.first().then(gear => {
-			gear.set("category", category);
-			gear.set("name", name);
-			gear.set("description", description);
-			gear.set("weight", weight);
-			gear.save();
+	handleUpdateGear = (values) => {
+		db.collection('gear-items').doc(values.id)
+			.update(values).then(() => {
+			console.info('Gear updated');
+			return this.props.history.push(PAGE_LIST);
 		}).catch(e => {
 			console.error(e);
-			throw new Error("Error updating gear.");
+			this.state({
+				error: "Could not update gear."
+			});
 		});
-
-		this.props.history.push(PAGE_LIST); // Go to list
 	};
 
 	render() {
-		const {handleCancel, handleDelete, handleSubmit} = this;
+		const {handleCancel, _handleDeleteGear, handleUpdateGear} = this;
 		const {history} = this.props;
-		const {gearItem, loading} = this.state;
+		const {gearItem, loading, error} = this.state;
 
-		if (loading) return <div>Loading...</div>;
+		if (loading) return <Container>Loading...</Container>;
+		if (!gearItem) throw new Error("Gear item does not exist");
+		if (error) throw new Error(error);
 
-		return (<div>
+		return (<Container>
 			<EditFormMenu
-				handleDelete={handleDelete}
-			/>
+				gearId={gearItem.id}
+				handleDeleteGear={_handleDeleteGear}/>
 			<EditGearForm
 				isEditForm={true}
 				history={history}
 				gearItem={gearItem}
 				handleCancel={handleCancel}
-				handleSubmit={handleSubmit}
+				handleUpdateGear={handleUpdateGear}
 			/>
-		</div>);
+		</Container>);
 	}
 }

@@ -44,8 +44,9 @@ const formikConfig = {
 		return errors;
 	},
 
-	handleSubmit: (values, {props}) => {
+	handleSubmit: (values, {props, setSubmitting}) => {
 		props.handleAddUser(values, props);
+		setSubmitting(false);
 	},
 
 	displayName: 'UserSignUpForm',
