@@ -11,8 +11,7 @@ export default class AddGearPage extends Component {
 	};
 
 	handleAddGear = (values) => {
-		db.collection('gear-items').add(values).then(response => {
-			console.log('response', response);
+		db.collection('gear-items').add(values).then(() => {
 			return this.props.history.push(PAGE_LIST);
 		}).catch(e => {
 			console.error(e);

@@ -43,15 +43,9 @@ class Form extends Component {
 
 	render() {
 		const {
-			values, dirty, status, touched, errors, isSubmitting, updateAuthenticated, handleChange, handleBlur, handleSignUp, handleSubmit, success
+			values, dirty, touched, errors, isSubmitting, updateAuthenticated, handleChange, handleBlur, handleSignUp, handleSubmit
 		} = this.props;
 		const {username, password} = values;
-
-		console.log('props', this.props);
-
-		console.log('status', status);
-		console.log('success', success);
-		console.log('errors.success', errors.success);
 
 		if (errors.success) {
 			updateAuthenticated(true);

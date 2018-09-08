@@ -4,10 +4,10 @@ export const login = (username, password) => {
 	Parse.User.logIn(username, password)
 		.then(user => {
 			if (!!user) {
-				console.log("Logged in", username);
+				console.info("Logged in", username);
 				localStorage.setItem("userAuth", "true");
 			} else {
-				console.log("Not logged in");
+				console.info("Not logged in");
 				localStorage.removeItem("userAuth");
 			}
 			console.log("Logged in", isLoggedIn());

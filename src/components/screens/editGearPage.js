@@ -20,14 +20,12 @@ export default class EditGearPage extends Component {
 
 	componentDidMount() {
 		const gearId = this.props.match.params.key;
-		console.log('EditGearPage.componentDidMount: gearId', gearId);
 		db.collection('gear-items').doc(gearId).get()
 			.then(snapshot => {
 				// IMPORTANT: Add ID to GearItem
 				const gearItem = snapshot.data();
 				if (gearItem) {
 					gearItem.id = snapshot.id;
-					console.log('EditGearPage.componentDidMount: gearItem', gearItem);
 					this.setState({
 						error: null,
 						gearItem,
@@ -80,8 +78,8 @@ export default class EditGearPage extends Component {
 
 	handleUpdateGear = (values) => {
 		db.collection('gear-items').doc(values.id)
-			.update(values).then(response => {
-			console.log('response', response);
+			.update(values).then(() => {
+			console.info('Gear updated');
 			return this.props.history.push(PAGE_LIST);
 		}).catch(e => {
 			console.error(e);
@@ -95,8 +93,6 @@ export default class EditGearPage extends Component {
 		const {handleCancel, _handleDeleteGear, handleUpdateGear} = this;
 		const {history} = this.props;
 		const {gearItem, loading, error} = this.state;
-
-		console.log('EditGearPage.render: state.gearItem', gearItem);
 
 		if (loading) return <Container>Loading...</Container>;
 		if (!gearItem) throw new Error("Gear item does not exist");
