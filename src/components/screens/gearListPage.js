@@ -38,8 +38,6 @@ export default class GearListPage extends React.Component {
 		const {handleEditGearLink} = this;
 		const {gearList, loading} = this.state;
 
-		if (loading) return <div>Loading...</div>;
-
 		const hasResults = gearList.length > 0;
 
 		return (<div>
