@@ -9,6 +9,7 @@ import {validateRequired} from "../../common/formValidationRules";
 import UserNameField from "./fields/userNameField";
 import PasswordField from "./fields/passwordField";
 import {PAGE_LIST} from "../../../App";
+import Loading from "../../common/loadingComponent";
 
 const formConfig = {
 	mapPropsToValues: () => {
@@ -54,11 +55,8 @@ class Form extends Component {
 			return <Redirect to={PAGE_LIST}/>
 		}
 
-		return (<form id="userLogin" onSubmit={handleSubmit} noValidate>
-
-			{loading && <div>Logging in...</div>}
-
-			{!loading && <div>
+		return (<Loading loading={loading}>
+			<form id="userLogin" onSubmit={handleSubmit} noValidate>
 				{this.showErrors(errors)}
 				<UserNameField
 					autoComplete="username"
@@ -98,8 +96,8 @@ class Form extends Component {
 						</Button>
 					</Col>
 				</Row>
-			</div>}
-		</form>);
+			</form>
+		</Loading>);
 	}
 }
 
