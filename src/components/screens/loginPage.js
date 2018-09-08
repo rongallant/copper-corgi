@@ -31,6 +31,7 @@ export default class LoginPage extends Component {
 		const {handleUserLogin, handleSignUp} = this;
 
 		return (<Container>
+			<h3>Login</h3>
 			<UserLoginForm
 				{...this.props}
 				handleSignUp={handleSignUp}

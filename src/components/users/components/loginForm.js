@@ -55,51 +55,49 @@ class Form extends Component {
 		}
 
 		return (<form id="userLogin" onSubmit={handleSubmit} noValidate>
-			<h3>Login</h3>
 
-			{this.showErrors(errors)}
-
-			{loading && <div>Loading...</div>}
+			{loading && <div>Logging in...</div>}
 
 			{!loading && <div>
-			<UserNameField
-				autoComplete="username"
-				value={username}
-				onChange={handleChange}
-				onBlur={handleBlur}
-				errors={errors}
-				touched={touched}
-			/>
-			<PasswordField
-				autoComplete="current-password"
-				value={password}
-				onChange={handleChange}
-				onBlur={handleBlur}
-				errors={errors}
-				touched={touched}
-			/>
-			<Row className="justify-content-end">
-				<Col sm={3}>
-					<Button
-						block
-						className="mr-3 mb-3"
-						color="link"
-						disabled={isSubmitting}
-						onClick={handleSignUp}>
-						Create Account
-					</Button>
-				</Col>
-				<Col sm={3}>
-					<Button
-						block
-						className="mr-3 mb-3"
-						color="primary"
-						type="submit"
-						disabled={!dirty || !_.isEmpty(errors) || isSubmitting}>
-						Login
-					</Button>
-				</Col>
-			</Row>
+				{this.showErrors(errors)}
+				<UserNameField
+					autoComplete="username"
+					value={username}
+					onChange={handleChange}
+					onBlur={handleBlur}
+					errors={errors}
+					touched={touched}
+				/>
+				<PasswordField
+					autoComplete="current-password"
+					value={password}
+					onChange={handleChange}
+					onBlur={handleBlur}
+					errors={errors}
+					touched={touched}
+				/>
+				<Row className="justify-content-end">
+					<Col sm={3}>
+						<Button
+							block
+							className="mr-3 mb-3"
+							color="link"
+							disabled={isSubmitting}
+							onClick={handleSignUp}>
+							Create Account
+						</Button>
+					</Col>
+					<Col sm={3}>
+						<Button
+							block
+							className="mr-3 mb-3"
+							color="primary"
+							type="submit"
+							disabled={!dirty || !_.isEmpty(errors) || isSubmitting}>
+							Login
+						</Button>
+					</Col>
+				</Row>
 			</div>}
 		</form>);
 	}
