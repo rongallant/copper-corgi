@@ -3,11 +3,9 @@ import {withFormik} from "formik";
 import {GearForm} from "./components/gearForm";
 
 export const AddGearForm = withFormik({
-
 	mapPropsToValues: () => {
 		return {category: "", name: "", description: "", weight: ""};
 	},
-
 	validate: values => {
 		let errors = {};
 
@@ -25,13 +23,10 @@ export const AddGearForm = withFormik({
 
 		return errors;
 	},
-
-	handleSubmit: (values, {props, setStatus}) => {
-		props.handleAddGear(values, setStatus);
+	handleSubmit: (values, {props}) => {
+		props.handleAddGear(values);
 	},
-
 	displayName: 'AddGearForm',
-
 })(GearForm);
 
 

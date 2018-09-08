@@ -47,12 +47,6 @@ const settings = {/* your settings... */ timestampsInSnapshots: true};
 firestore.settings(settings);
 export const db = firestore;
 
-
-// query test
-// firebase.database().ref('/gear-items').once('value').then(function(snapshot) {
-// 	console.log(" Firebase: gearItems", snapshot.val());
-// });
-
 Parse.initialize(PARSE_APP_ID, PARSE_JS_KEY);
 Parse.serverURL = PARSE_SERVER_URL;
 
