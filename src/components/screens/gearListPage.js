@@ -3,6 +3,7 @@ import {Table} from 'reactstrap';
 
 import {displayUnit} from "../../services/localStorageService";
 import {db, PAGE_EDIT_BASE} from "../../App";
+import Loading from "../common/loadingComponent";
 
 export default class GearListPage extends React.Component {
 
@@ -37,10 +38,11 @@ export default class GearListPage extends React.Component {
 	render() {
 		const {handleEditGearLink} = this;
 		const {gearList, loading} = this.state;
-
 		const hasResults = gearList.length > 0;
 
-		return (<div>
+		return (<Loading
+			loading={loading}
+			preventLoadingChildren={true}>
 			<h3>Gear</h3>
 			<Table responsive hover>
 				<thead>
@@ -52,11 +54,9 @@ export default class GearListPage extends React.Component {
 					</tr>
 				</thead>
 				<tbody>
-
 					{!hasResults && (<tr>
 						<th colSpan={5} className="text-center">You have no gear!</th>
 					</tr>)}
-
 					{hasResults && gearList.map((gear, index) => {
 						const {id, name, category, weight} = gear;
 						return (<tr key={id} onClick={() => handleEditGearLink(gear)}>
@@ -69,6 +69,6 @@ export default class GearListPage extends React.Component {
 
 				</tbody>
 			</Table>
-		</div>);
+		</Loading>);
 	}
 }

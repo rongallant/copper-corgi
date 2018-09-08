@@ -22,7 +22,7 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "npm  sass:build && react-scripts build",
+		"build": "npm sass:build && react-scripts build",
 		"sass:watch": "sass --watch ./src/styles:./public/css",
 		"sass:build": "sass --update ./src/styles:./public/css",
 		"test": "react-scripts test --env=jsdom",
