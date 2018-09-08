@@ -1,5 +1,5 @@
 import React from "react";
-import {Table} from 'reactstrap';
+import {Container, Table} from 'reactstrap';
 
 import {displayUnit} from "../../services/localStorageService";
 import {db, PAGE_EDIT_BASE} from "../../App";
@@ -43,7 +43,9 @@ export default class GearListPage extends React.Component {
 		return (<Loading
 			loading={loading}
 			preventLoadingChildren={true}>
-			<h3>Gear</h3>
+			<Container>
+				<h3>Gear</h3>
+			</Container>
 			<Table responsive hover>
 				<thead>
 					<tr>
