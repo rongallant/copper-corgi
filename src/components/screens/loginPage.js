@@ -14,17 +14,19 @@ export default class LoginPage extends Component {
 		}
 	};
 
-	_handleUserLogin = (username, password, updateAuthenticated, setErrors) => {
+	_handleUserLogin = (username, password, updateAuthenticated, setErrors, setFormikState) => {
 		firebase.auth().signInWithEmailAndPassword(username, password)
 			.then(result => {
 				console.debug("signInWithEmailAndPassword", result.user.uid);
 				localStorage.setItem("userAuth", "true");
-				updateAuthenticated(result.user.uid)
+				updateAuthenticated(result.user.uid);
+				setFormikState({success: true});
 			})
 			.catch(function (error) {
 				localStorage.removeItem("userAuth");
+				updateAuthenticated(null);
+				setFormikState({success: false});
 				setErrors({formError: error.message});
-				updateAuthenticated(null)
 			});
 	};
 
@@ -39,8 +41,8 @@ export default class LoginPage extends Component {
 
 		return (<Container>
 			<h3>Login</h3>
-
 			<UserLoginForm
+				{...this.props}
 				handleSignUp={_handleSignUp}
 				handleUserLogin={_handleUserLogin}
 				updateAuthenticated={updateAuthenticated}

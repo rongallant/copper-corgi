@@ -13,7 +13,8 @@ import {PAGE_LIST} from "../../../App";
 const formConfig = {
 	mapPropsToValues: () => {
 		return {username: "", password: ""};
-	}, validate: values => {
+	},
+	validate: values => {
 		let errors = {};
 		const isUsername = validateRequired(values.username);
 		if (isUsername) {
@@ -24,41 +25,35 @@ const formConfig = {
 			errors.password = isPassword;
 		}
 		return errors;
-	}, handleSubmit: (values, {props, setStatus, setSubmitting, setErrors}) => {
+	},
+	handleSubmit: (values, {props, setFormikState, setSubmitting, setErrors}) => {
 		// INFO How to deal with error messages.
 		const {username, password} = values;
-		props.handleUserLogin(username, password, props.updateAuthenticated, setErrors);
-		//setStatus({test:true}); TODO Why no work?
+		// TODO const success = handleUserLogin
+		props.handleUserLogin(username, password, props.updateAuthenticated, setFormikState, setErrors);
 		setSubmitting(false);
-		// setStatus({ success: true })
 	}, displayName: 'UserLoginForm',
 };
 
 class Form extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {success:false}
-	}
-
 	showErrors = (errors) => {
-		return errors.formError &&
-			<Alert color="warning">{errors.formError}</Alert>
+		return errors.formError && <Alert color="warning">{errors.formError}</Alert>
 	};
 
 	render() {
 		const {
-			values, dirty, status, touched, errors, isSubmitting,
-			updateAuthenticated, handleChange, handleBlur,
-			handleSignUp, handleSubmit
+			values, dirty, status, touched, errors, isSubmitting, updateAuthenticated, handleChange, handleBlur, handleSignUp, handleSubmit, success
 		} = this.props;
 		const {username, password} = values;
 
-		console.log('state', this.state);
+		console.log('props', this.props);
 
-		// console.log('props', this.props);
+		console.log('status', status);
+		console.log('success', success);
+		console.log('errors.success', errors.success);
 
-		if (status) {
+		if (errors.success) {
 			updateAuthenticated(true);
 			return <Redirect to={PAGE_LIST}/>
 		}

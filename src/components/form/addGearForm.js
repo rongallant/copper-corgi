@@ -4,27 +4,24 @@ import {GearForm} from "./components/gearForm";
 
 export const AddGearForm = withFormik({
 	mapPropsToValues: () => {
-		return {category: "", name: "", description: "", weight: ""};
+		return {};
 	},
 	validate: values => {
 		let errors = {};
-
 		if (!values.category) {
 			errors.category = 'Required';
 		}
-
 		if (!values.name) {
 			errors.name = 'Required';
 		}
-
 		if (!values.weight) {
 			errors.weight = 'Required';
 		}
-
 		return errors;
 	},
-	handleSubmit: (values, {props}) => {
-		props.handleAddGear(values);
+	handleSubmit: (values, {props, setErrors, setSubmitting}) => {
+		props.handleAddGear(values, setErrors);
+		setSubmitting(false);
 	},
 	displayName: 'AddGearForm',
 })(GearForm);

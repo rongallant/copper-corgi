@@ -9,7 +9,7 @@ export default class GearListPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			gearList: [], gearItem: {}, loading: true, redirect: true
+			gearList: [], loading: true, redirect: true
 		};
 	}
 

@@ -3,53 +3,59 @@ import {Container} from "reactstrap";
 import confirm from 'reactstrap-confirm';
 
 import {EditGearForm} from "../form/editGearForm";
-import {db, PAGE_EDIT_PATH, PAGE_LIST} from "../../App";
+import {db, PAGE_LIST} from "../../App";
 import EditFormMenu from "../form/components/editFormMenu";
 
 export default class EditGearPage extends Component {
 
 	constructor(props) {
 		super(props);
-		this.handleDeleteGear = this.handleDeleteGear.bind(this);
+		this._handleDeleteGear = this._handleDeleteGear.bind(this);
 		this.state = {
-			loading: false, gearItem: null, error: null
+			gearItem: {},
+			error: null,
+			loading: true
 		};
 	}
 
 	componentDidMount() {
-		const {match: {path, params: {key}}} = this.props;
-		// TODO Handle doc not found.
-		if (PAGE_EDIT_PATH === path) {
-			db.collection('gear-items').doc(key).get()
-				.then((snapshot) => {
-					// IMPORTANT: Add ID to GearItem
-					if (snapshot.data()) {
-						const gearItem = snapshot.data();
-						gearItem.id = snapshot.id;
-						this.setState({gearItem: gearItem, loading: false});
-					} else {
-						console.info('GearItem not found');
-						this.state({
-							error: "GearItem not found."
-						});
-					}
-				})
-				.catch((err) => {
-					console.error(err);
-					this.state({
-						error: "Error getting gear."
+		const gearId = this.props.match.params.key;
+		console.log('EditGearPage.componentDidMount: gearId', gearId);
+		db.collection('gear-items').doc(gearId).get()
+			.then(snapshot => {
+				// IMPORTANT: Add ID to GearItem
+				const gearItem = snapshot.data();
+				if (gearItem) {
+					gearItem.id = snapshot.id;
+					console.log('EditGearPage.componentDidMount: gearItem', gearItem);
+					this.setState({
+						error: null,
+						gearItem,
+						loading: false
 					});
+				} else {
+					this.setState({
+						error: "GearItem not found.",
+						gearItem: null,
+						loading: false
+					});
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+				this.setState({
+					error: "Error getting gear.",
+					gearItem: null,
+					loading: false
 				});
-		} else {
-			this.setState({gearItem: null, loading: false});
-		}
+			});
 	}
 
 	handleCancel = () => {
 		this.props.history.push(PAGE_LIST);
 	};
 
-	async handleDeleteGear(id) {
+	async _handleDeleteGear(id) {
 		let result = await confirm({
 			title: 'Warning',
 			message: 'Are you sure you want to delete?',
@@ -86,9 +92,11 @@ export default class EditGearPage extends Component {
 	};
 
 	render() {
-		const {handleCancel, handleDeleteGear, handleUpdateGear} = this;
+		const {handleCancel, _handleDeleteGear, handleUpdateGear} = this;
 		const {history} = this.props;
 		const {gearItem, loading, error} = this.state;
+
+		console.log('EditGearPage.render: state.gearItem', gearItem);
 
 		if (loading) return <Container>Loading...</Container>;
 		if (!gearItem) throw new Error("Gear item does not exist");
@@ -97,7 +105,7 @@ export default class EditGearPage extends Component {
 		return (<Container>
 			<EditFormMenu
 				gearId={gearItem.id}
-				handleDeleteGear={handleDeleteGear}/>
+				handleDeleteGear={_handleDeleteGear}/>
 			<EditGearForm
 				isEditForm={true}
 				history={history}

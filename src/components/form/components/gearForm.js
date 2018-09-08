@@ -14,6 +14,7 @@ export const GearForm = props => {
 		handleChange, handleBlur, handleSubmit, handleReset, dirty,
 	} = props;
 	const {name, category, weight, description} = values;
+	console.log("GearForm: values", values);
 
 	return (<form onSubmit={handleSubmit} noValidate>
 		<CategoryField
