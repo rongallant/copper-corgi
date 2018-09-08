@@ -60,7 +60,10 @@ export default class Header extends Component {
 		const {isAuthenticated} = this.props;
 
 		return (<header>
-			<Navbar expand="md" color="dark" dark>
+			<Navbar
+				expand="md"
+				className="mb-3"
+				color="dark" dark>
 				<NavbarBrand href={PAGE_HOME}>
 					<img
 						src="/images/BacPacTrac-Title.svg"

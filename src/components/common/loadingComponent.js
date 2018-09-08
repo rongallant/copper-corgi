@@ -13,6 +13,7 @@ export default class Loading extends Component {
 
 		if (loading) {
 			return (<div>
+				{!preventLoadingChildren && children}
 				<Modal
 					isOpen={isOpen}
 					style={{width: 48}}
