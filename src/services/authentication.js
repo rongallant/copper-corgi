@@ -1,5 +1,3 @@
-
-
 export const login = (username, password) => {
 }, isLoggedIn = () => {
 	const userAuth = localStorage.getItem("userAuth");

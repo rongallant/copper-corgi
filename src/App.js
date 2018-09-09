@@ -23,7 +23,6 @@ export const PAGE_EDIT_BASE = "/edit";
 export const PAGE_EDIT_PATH = `${PAGE_EDIT_BASE}/:key`;
 export const PAGE_USER_SIGN_UP = "/signup";
 
-
 // Initialize Firebase
 const config = {
 	apiKey: "AIzaSyB3w1N8ycr7kql3UvICypsEk2ZF7aAymdo",
