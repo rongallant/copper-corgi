@@ -27,8 +27,8 @@ export default class LoginPage extends Component {
 	};
 
 	render() {
-		const {handleUserLogin, handleSignUp} = this;
 		const {updateAuthenticated} = this.props;
+		const {handleUserLogin, handleSignUp} = this;
 
 		return (<Container>
 			<h3>Login</h3>
@@ -38,6 +38,6 @@ export default class LoginPage extends Component {
 				handleUserLogin={handleUserLogin}
 				updateAuthenticated={updateAuthenticated}
 			/>
-		</Container>);
+		</Container>)
 	}
 }

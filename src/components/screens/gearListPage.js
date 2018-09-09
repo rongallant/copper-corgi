@@ -1,7 +1,7 @@
 import React from "react";
 import {Container, Table} from 'reactstrap';
 
-import {displayUnit} from "../../services/displayUtils";
+import {displayUnit} from "../../services/localStorageService";
 import {db, PAGE_EDIT_BASE} from "../../App";
 import Loading from "../common/loadingComponent";
 

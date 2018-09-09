@@ -1,12 +1,12 @@
+import Route from "react-router-dom/es/Route";
+import {isLoggedIn} from "../services/authentication";
 import React from "react";
-import {Redirect, Route} from "react-router-dom";
-
+import Redirect from "react-router-dom/es/Redirect";
 import {PAGE_LOGIN} from "../App";
-import {hasLoginToken} from "../services/authentication";
 
 export const PrivateRoute = ({ component: Component, ...rest }) => (
 	<Route {...rest} render={(props) => (
-		hasLoginToken()
+		isLoggedIn()
 			? <Component {...props} />
 			: <Redirect to={PAGE_LOGIN} />
 	)} />

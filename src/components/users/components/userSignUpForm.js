@@ -1,23 +1,30 @@
-import React, {Component} from "react";
+import React from 'react';
 import {withFormik} from "formik";
-import {Alert, Button, Col, Row} from "reactstrap";
-import {Redirect} from "react-router-dom";
+import {Button, Col, Row} from "reactstrap";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
+import UserNameField from "./fields/userNameField";
 import EmailField from "./fields/emailField";
 import PasswordField from "./fields/passwordField";
 import VerifyPasswordField from "./fields/verifyPasswordField";
-import Loading from "../../common/loadingComponent";
-import {PAGE_LIST} from "../../../App";
 import {
-	validateEmail, validatePassword, validateSamePassword
+	validateEmail, validatePassword, validateSamePassword, validateUsername
 } from "../../common/formValidationRules";
 
 const formikConfig = {
 
+	mapPropsToValues: () => {
+		return {username: "", email: "", password: "", verifyPassword: ""};
+	},
+
 	validate: values => {
 		let errors = {};
+
+		const userNameErrors = validateUsername(values.username, true);
+		if (userNameErrors) {
+			errors.username = userNameErrors;
+		}
 
 		const emailErrors = validateEmail(values.email, true);
 		if (emailErrors) {
@@ -37,97 +44,85 @@ const formikConfig = {
 		return errors;
 	},
 
-	handleSubmit: async (values, {props, setSubmitting, setErrors, setFormikState}) => {
-		try {
-			setFormikState({loading: true});
-			const {email, password} = values;
-			await props.handleAddUser(email, password, props.updateAuthenticated);
-			setFormikState({success: true});
-		} catch (error) {
-			setFormikState({success: false, loading: false});
-			setErrors({formError: error.message});
-		}
+	handleSubmit: (values, {props, setSubmitting}) => {
+		props.handleAddUser(values, props);
 		setSubmitting(false);
 	},
 
 	displayName: 'UserSignUpForm',
+
 };
 
-class Form extends Component {
+const Form = props => {
+	const {
+		values, dirty, touched, errors, isSubmitting, handleChange,
+		handleBlur, handleReset, handleSubmit,
+	} = props;
+	const {username, email, password, verifyPassword} = values;
 
-	showErrors = (errors) => {
-		return errors.formError && <Alert color="warning">{errors.formError}</Alert>
-	};
-
-	render() {
-		const {
-			values: {email, password, verifyPassword}, dirty, touched, errors, isSubmitting, handleChange, handleBlur, handleReset, handleSubmit, loading, success
-		} = this.props;
-
-		if (success === true) {
-			return <Redirect to={PAGE_LIST}/>
-		}
-
-		return (<Loading loading={loading}>
-			<form id="userSignUp" onSubmit={handleSubmit} noValidate>
-				{this.showErrors(errors)}
-				<EmailField
-					autoComplete="username"
-					value={email}
+	return (<form id="userSignUp" onSubmit={handleSubmit} noValidate>
+		<UserNameField
+			autoComplete="username"
+			value={username}
+			onChange={handleChange}
+			onBlur={handleBlur}
+			errors={errors}
+			touched={touched}
+		/>
+		<EmailField
+			value={email}
+			onChange={handleChange}
+			onBlur={handleBlur}
+			errors={errors}
+			touched={touched}
+		/>
+		<Row>
+			<Col sm={6}>
+				<PasswordField
+					autoComplete="new-password"
+					value={password}
 					onChange={handleChange}
 					onBlur={handleBlur}
 					errors={errors}
 					touched={touched}
 				/>
-				<Row>
-					<Col sm={6}>
-						<PasswordField
-							autoComplete="new-password"
-							value={password}
-							onChange={handleChange}
-							onBlur={handleBlur}
-							errors={errors}
-							touched={touched}
-						/>
-					</Col>
-					<Col sm={6}>
-						<VerifyPasswordField
-							autoComplete="new-password"
-							value={verifyPassword}
-							onChange={handleChange}
-							onBlur={handleBlur}
-							errors={errors}
-							touched={touched}
-						/>
-					</Col>
-				</Row>
-				<Row className="justify-content-end">
-					<Col sm={3}>
-						<Button
-							block
-							outline
-							className="mr-3 mb-3"
-							type="button"
-							onClick={handleReset}
-							disabled={!dirty || isSubmitting}>
-							Reset
-						</Button>
-					</Col>
-					<Col sm={3}>
-						<Button
-							block
-							className="mr-3 mb-3"
-							color="primary"
-							type="submit"
-							disabled={!dirty || !_.isEmpty(errors) || isSubmitting}>
-							Sign up!
-						</Button>
-					</Col>
-				</Row>
-			</form>
-		</Loading>);
-	}
-}
+			</Col>
+			<Col sm={6}>
+				<VerifyPasswordField
+					autoComplete="new-password"
+					value={verifyPassword}
+					onChange={handleChange}
+					onBlur={handleBlur}
+					errors={errors}
+					touched={touched}
+				/>
+			</Col>
+		</Row>
+		<Row className="justify-content-end">
+			<Col sm={3}>
+				<Button
+					block
+					outline
+					className="mr-3 mb-3"
+					type="button"
+					onClick={handleReset}
+					disabled={!dirty || isSubmitting}>
+					Reset
+				</Button>
+			</Col>
+			<Col sm={3}>
+				<Button
+					block
+					className="mr-3 mb-3"
+					color="primary"
+					type="submit"
+					disabled={!dirty || !_.isEmpty(errors) || isSubmitting}>
+					Sign up!
+				</Button>
+			</Col>
+		</Row>
+	</form>);
+};
 
 Form.propTypes = {
 	values: PropTypes.object.isRequired,
@@ -139,8 +134,9 @@ Form.propTypes = {
 	handleBlur: PropTypes.func,
 	handleSubmit: PropTypes.func,
 	handleReset: PropTypes.func,
-	handleAddUser: PropTypes.func.isRequired,
 	dirty: PropTypes.bool,
 };
 
 export const UserSignUpForm = withFormik(formikConfig)(Form);
+
+

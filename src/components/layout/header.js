@@ -3,21 +3,14 @@ import {Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink as Link, Uncon
 import {NavLink} from "react-router-dom";
 
 import {PAGE_ADD, PAGE_HOME, PAGE_LIST, PAGE_LOGIN} from "../../App";
-import {removeAuthToken} from "../../services/authentication";
-import firebase from "firebase";
+import {logout} from "../../services/authentication";
 
 export default class Header extends Component {
 
-	handleLogout = () => {
-		firebase.auth().signOut().then(function() {
-			// Sign-out successful.
-			removeAuthToken();
-			this.props.updateAuthenticated(false);
-		}).catch(function(error) {
-			// An error happened.
-			console.error('Could not log user out.');
-			console.error(error);
-		});
+	handleLogout = (e) => {
+		console.log('App.handleLogout');
+		e.preventDefault();
+		this.props.updateAuthenticated(logout())
 	};
 
 	renderMenu = (authenticated) => {
