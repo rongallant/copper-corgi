@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import {PrivateRoute} from './security/privateRoute';
 import firebase from "firebase";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-import AddGearPage from './components/screens/addGearPage'
 import Header from "./components/layout/header";
 import Footer from "./components/layout/footer";
-import EditGearPage from "./components/screens/editGearPage";
+import {PrivateRoute} from './security/privateRoute';
 import HomePage from "./components/screens/homePage";
-import GearListPage from "./components/screens/gearListPage";
 import UserSignUpPage from "./components/screens/userSignUpPage";
 import LoginPage from "./components/screens/loginPage";
+import GearListPage from "./components/screens/gearListPage";
+import AddGearPage from './components/screens/addGearPage'
+import EditGearPage from "./components/screens/editGearPage";
 import ErrorBoundary from './components/common/error-handler/errorBoundary';
+import {firebaseConfig} from "./firebaseConfig";
 
 const USER_AUTH_KEY = "userAuth";
 
@@ -23,20 +24,10 @@ export const PAGE_EDIT_BASE = "/edit";
 export const PAGE_EDIT_PATH = `${PAGE_EDIT_BASE}/:key`;
 export const PAGE_USER_SIGN_UP = "/signup";
 
-// Initialize Firebase
-const config = {
-	apiKey: "AIzaSyB3w1N8ycr7kql3UvICypsEk2ZF7aAymdo",
-	authDomain: "bacpactrac.firebaseapp.com",
-	databaseURL: "https://bacpactrac.firebaseio.com",
-	projectId: "bacpactrac",
-	storageBucket: "bacpactrac.appspot.com",
-	messagingSenderId: "373362418095"
-};
-firebase.initializeApp(config);
-console.log("Initialized Firebase app", firebase);
+firebase.initializeApp(firebaseConfig);
 
 const firestore = firebase.firestore();
-const settings = {/* your settings... */ timestampsInSnapshots: true};
+const settings = {timestampsInSnapshots: true};
 firestore.settings(settings);
 export const db = firestore;
 
