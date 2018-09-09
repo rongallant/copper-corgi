@@ -9,8 +9,6 @@
 		"cors": "^2.8.4",
 		"formik": "^1.1.1",
 		"lodash": "^4.17.10",
-		"parse": "^2.0.2",
-		"parse-react": "^0.5.2",
 		"prop-types": "^15.6.2",
 		"react": "^16.4.2",
 		"react-dom": "^16.4.2",
