@@ -10,7 +10,7 @@ class VerifyPasswordField extends Component {
 
 		return (<TextField
 			{...this.props}
-			id="verifyPassword"
+			id={id}
 			invalid={errors[id] && touched[id]}
 			label="Verify Password"
 			type="password"

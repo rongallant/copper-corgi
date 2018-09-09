@@ -10,7 +10,7 @@ class UserNameField extends Component {
 
 		return (<TextField
 			{...this.props}
-			id="username"
+			id={id}
 			invalid={errors[id] && touched[id]}
 			label="Username"
 			maxLength={100}

@@ -61,6 +61,7 @@ class Form extends Component {
 				<UserNameField
 					autoComplete="username"
 					value={username}
+					id="username"
 					onChange={handleChange}
 					onBlur={handleBlur}
 					errors={errors}
@@ -69,6 +70,7 @@ class Form extends Component {
 				<PasswordField
 					autoComplete="current-password"
 					value={password}
+					id="password"
 					onChange={handleChange}
 					onBlur={handleBlur}
 					errors={errors}

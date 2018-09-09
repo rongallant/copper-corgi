@@ -63,6 +63,7 @@ const Form = props => {
 	return (<form id="userSignUp" onSubmit={handleSubmit} noValidate>
 		<UserNameField
 			autoComplete="username"
+			id="username"
 			value={username}
 			onChange={handleChange}
 			onBlur={handleBlur}
@@ -71,6 +72,7 @@ const Form = props => {
 		/>
 		<EmailField
 			value={email}
+			id="email"
 			onChange={handleChange}
 			onBlur={handleBlur}
 			errors={errors}
@@ -80,6 +82,7 @@ const Form = props => {
 			<Col sm={6}>
 				<PasswordField
 					autoComplete="new-password"
+					id="password"
 					value={password}
 					onChange={handleChange}
 					onBlur={handleBlur}
@@ -90,6 +93,7 @@ const Form = props => {
 			<Col sm={6}>
 				<VerifyPasswordField
 					autoComplete="new-password"
+					id="verifyPassword"
 					value={verifyPassword}
 					onChange={handleChange}
 					onBlur={handleBlur}

@@ -10,7 +10,7 @@ class PasswordField extends Component {
 
 		return (<TextField
 			{...this.props}
-			id="password"
+			id={id}
 			invalid={errors[id] && touched[id]}
 			label="Password"
 			type="password"
