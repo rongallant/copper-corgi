@@ -23,8 +23,6 @@ class UserSignUpPage extends Component {
 		const {handleAddUser} = this;
 		const {updateAuthenticated} = this.props;
 
-		console.log('props', this.props);
-
 		return (<Container>
 			<h3>User Sign Up</h3>
 			<UserSignUpForm
