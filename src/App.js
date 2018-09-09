@@ -75,12 +75,17 @@ class App extends Component {
 				/>
 				<ErrorBoundary>
 					<Switch>
-						<Route
-							path={PAGE_USER_SIGN_UP}
-							component={UserSignUpPage}/>
 						<Route exact
 							path={PAGE_HOME}
 							component={HomePage}
+						/>
+						<Route
+							path={PAGE_USER_SIGN_UP}
+							render={(props) => <UserSignUpPage
+								{...props}
+								isAuthenticated={isAuthenticated}
+								updateAuthenticated={updateAuthenticated}
+							/>}
 						/>
 						<Route
 							path={PAGE_LOGIN}

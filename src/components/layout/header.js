@@ -85,7 +85,7 @@ Header.defaultProps = {
 };
 
 Header.propTypes = {
-	isAuthenticated: PropTypes.bool.isRequired,
+	isAuthenticated: PropTypes.bool,
 	updateAuthenticated: PropTypes.func.isRequired
 };
 

@@ -6,20 +6,33 @@ import {UserSignUpForm} from '../users/components/userSignUpForm';
 
 class UserSignUpPage extends Component {
 
-	handleAddUser = (values) => {
-		console.log('handleAddUser: values', values);
-		// TODO Implement firebase
-		this.props.history.push(PAGE_LIST); // Go to list
+	handleAddUser = (email, password, updateAuthenticated) => {
+		return firebase.auth().createUserWithEmailAndPassword(email, password)
+			.then(result => {
+				localStorage.setItem("userAuth", "true");
+				updateAuthenticated(true); // set state on App.js
+			})
+			.catch(function (error) {
+				localStorage.removeItem("userAuth");
+				updateAuthenticated(null);
+				throw error;
+			});
 	};
 
 	render() {
 		const {handleAddUser} = this;
+		const {updateAuthenticated} = this.props;
 
-		return (<div>
+		console.log('props', this.props);
+
+		return (<Container>
 			<h3>User Sign Up</h3>
 			<UserSignUpForm
+				{...this.props}
 				handleAddUser={handleAddUser}
-			/></div>)
+				updateAuthenticated={updateAuthenticated}
+			/>
+		</Container>);
 	}
 }
 
