@@ -1,8 +1,10 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import firebase from "firebase";
+import {Container} from "reactstrap";
 
-import {PAGE_LIST} from "../../App";
 import {UserSignUpForm} from '../users/components/userSignUpForm';
+import {USER_AUTH_KEY} from "../../App";
 
 class UserSignUpPage extends Component {
 
@@ -35,7 +37,7 @@ class UserSignUpPage extends Component {
 }
 
 UserSignUpPage.propTypes = {
-	history: PropTypes.object.isRequired
+	updateAuthenticated: PropTypes.func.isRequired
 };
 
 export default UserSignUpPage;
