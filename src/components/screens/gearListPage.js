@@ -18,16 +18,13 @@ class GearListPage extends React.Component {
 
 	async componentDidMount() {
 		const userId = localStorage.getItem(USER_AUTH_KEY);
-		console.log('userId', userId);
 		db.collection('user-gear')
 			.doc(userId)
 			.collection('gear-items').get()
 			.then(snapshot => {
-				console.log('snapshot', snapshot);
 				if (snapshot) {
 					const gearList = [];
 					snapshot.forEach(doc => {
-						console.log('doc', doc);
 						const newItem = doc.data();
 						newItem.id = doc.id;
 						gearList.push(newItem);
@@ -36,7 +33,6 @@ class GearListPage extends React.Component {
 				}
 			})
 			.catch(error => {
-				// console.error('Error Code:', error.code);
 				console.error('Error Code:', error);
 				throw new Error("Error getting gear.");
 			});
