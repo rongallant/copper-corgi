@@ -13,7 +13,7 @@ import GearListPage from "./components/screens/gearListPage";
 import UserSignUpPage from "./components/screens/userSignUpPage";
 import LoginPage from "./components/screens/loginPage";
 import ErrorBoundary from './components/common/error-handler/errorBoundary';
-
+import {removeAuthToken} from "./services/authentication";
 
 const PARSE_APP_ID = 'BacPacTracApp';
 const PARSE_JS_KEY = 'BacPacTracAppJs';
@@ -28,7 +28,6 @@ export const PAGE_EDIT_BASE = "/edit";
 export const PAGE_EDIT_PATH = `${PAGE_EDIT_BASE}/:key`;
 export const PAGE_USER_SIGN_UP = "/signup";
 
-
 // Initialize Firebase
 const config = {
 	apiKey: "AIzaSyB3w1N8ycr7kql3UvICypsEk2ZF7aAymdo",
@@ -41,11 +40,20 @@ const config = {
 firebase.initializeApp(config);
 console.log("Initialized Firebase app", firebase);
 
-
 const firestore = firebase.firestore();
 const settings = {/* your settings... */ timestampsInSnapshots: true};
 firestore.settings(settings);
 export const db = firestore;
+
+// 
+firebase.auth().onAuthStateChanged(function(user) {
+	console.log('onAuthStateChanged', user);
+	if (user) {
+
+	} else {
+		// No user is signed in.
+	}
+});
 
 Parse.initialize(PARSE_APP_ID, PARSE_JS_KEY);
 Parse.serverURL = PARSE_SERVER_URL;
@@ -59,28 +67,51 @@ class App extends Component {
 		super(props);
 		this.state = {
 			isAuthenticated: false
-		}
+		};
 	}
 
+	updateAuthenticated = (login) => {
+		if (login) {
+			console.log('updateAuthenticated', firebase.auth());
+		} else {
+			firebase.auth().signOut().then(() => {
+				// Sign-out successful.
+				removeAuthToken();
+			}).catch(function (error) {
+				// An error happened.
+				console.error('Could not log user out.');
+				console.error(error);
+				this.setState({
+					isAuthenticated: null
+				});
+			});
+		}
+	};
+
 	componentDidMount() {
+
+		console.log('currentUser;', firebase.auth().currentUser);
+		firebase.auth().onAuthStateChanged(function(user) {
+			console.log('user', user);
+			if (user) {
+
+			} else {
+				// No user is signed in.
+			}
+		});
+
+
 		const userAuth = localStorage.getItem(USER_AUTH_KEY);
 		this.setState({
 			isAuthenticated: !!userAuth
 		});
 	}
 
-	updateAuthenticated = (value) => {
-		this.setState({
-			isAuthenticated: value
-		});
-	};
-
 	render() {
-		const {handleLogin, updateAuthenticated} = this;
+		const {updateAuthenticated} = this;
 		const {isAuthenticated} = this.state;
 
 		return (<Router>
-
 			<div id="gearApp">
 				<Header
 					isAuthenticated={isAuthenticated}
@@ -88,20 +119,24 @@ class App extends Component {
 				/>
 				<ErrorBoundary>
 					<Switch>
-						<Route
-							path={PAGE_USER_SIGN_UP}
-							component={UserSignUpPage}/>
 						<Route exact
 							path={PAGE_HOME}
 							component={HomePage}
 						/>
 						<Route
-							path={PAGE_LOGIN}
-							render={(props) => <LoginPage
+							path={PAGE_USER_SIGN_UP}
+							render={props => <UserSignUpPage
 								{...props}
 								isAuthenticated={isAuthenticated}
 								updateAuthenticated={updateAuthenticated}
-								handleLogin={handleLogin}
+							/>}
+						/>
+						<Route
+							path={PAGE_LOGIN}
+							render={props => <LoginPage
+								{...props}
+								isAuthenticated={isAuthenticated}
+								updateAuthenticated={updateAuthenticated}
 							/>}
 						/>
 						<PrivateRoute path={PAGE_LIST} component={GearListPage}/>

@@ -5,16 +5,15 @@ import {Redirect} from "react-router-dom";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
-import {validateRequired} from "../../common/formValidationRules";
 import UserNameField from "./fields/userNameField";
 import PasswordField from "./fields/passwordField";
-import {PAGE_LIST} from "../../../App";
 import Loading from "../../common/loadingComponent";
+import {PAGE_LIST} from "../../../App";
+import {validateRequired} from "../../common/formValidationRules";
 
 const formConfig = {
-	mapPropsToValues: () => {
-		return {username: "", password: ""};
-	}, validate: values => {
+
+	validate: values => {
 		let errors = {};
 		const isUsername = validateRequired(values.username);
 		if (isUsername) {
@@ -25,7 +24,9 @@ const formConfig = {
 			errors.password = isPassword;
 		}
 		return errors;
-	}, handleSubmit: async (values, {props, setFormikState, setSubmitting, setErrors}) => {
+	},
+
+	handleSubmit: async (values, {props, setFormikState, setSubmitting, setErrors}) => {
 		// INFO How to deal with error messages.
 		try {
 			setFormikState({loading: true});
@@ -37,7 +38,9 @@ const formConfig = {
 			setErrors({formError: error.message});
 		}
 		setSubmitting(false);
-	}, displayName: 'UserLoginForm',
+	},
+
+	displayName: 'UserLoginForm',
 };
 
 class Form extends Component {
