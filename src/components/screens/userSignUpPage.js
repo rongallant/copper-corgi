@@ -1,41 +1,13 @@
-import React from "react";
-import ParseReact from "parse-react";
+import React, {Component} from "react";
 
 import {UserSignUpForm} from '../users/components/userSignUpForm';
-import Parse from "parse/node";
 import {PAGE_LIST} from "../../App";
 
-export default class UserSignUpPage extends ParseReact.Component(React) {
-
-	observe() {
-	}
+export default class UserSignUpPage extends Component {
 
 	handleAddUser = (values) => {
 		console.log('handleAddUser: values', values);
-
-
-		// var role = new Parse.Role(roleName, roleACL);
-		// role.getUsers().add(usersToAddToRole);
-		// role.getRoles().add(rolesToAddToRole);
-		// role.save();
-
-
-		const {username, email, password} = values;
-		const User = Parse.Object.extend("User");
-		const user = new User();
-
-		user.set("username", username);
-		user.set("email", email);
-		user.set("password", password);
-
-		user.save()
-			.then((user) => {
-				console.log('New user created with objectId: ' + user.id);
-			}, (e) => {
-				console.error(e);
-				throw new Error("Error creating user.");
-			});
-
+		// TODO Implement firebase
 		this.props.history.push(PAGE_LIST); // Go to list
 	};
 

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {PrivateRoute} from './security/privateRoute';
-import Parse from "parse/node";
 import firebase from "firebase";
 
 import AddGearPage from './components/screens/addGearPage'
@@ -14,10 +13,6 @@ import UserSignUpPage from "./components/screens/userSignUpPage";
 import LoginPage from "./components/screens/loginPage";
 import ErrorBoundary from './components/common/error-handler/errorBoundary';
 
-
-const PARSE_APP_ID = 'BacPacTracApp';
-const PARSE_JS_KEY = 'BacPacTracAppJs';
-const PARSE_SERVER_URL = 'http://127.0.0.1:1337/parse';
 const USER_AUTH_KEY = "userAuth";
 
 export const PAGE_HOME = "/";
@@ -41,17 +36,10 @@ const config = {
 firebase.initializeApp(config);
 console.log("Initialized Firebase app", firebase);
 
-
 const firestore = firebase.firestore();
 const settings = {/* your settings... */ timestampsInSnapshots: true};
 firestore.settings(settings);
 export const db = firestore;
-
-Parse.initialize(PARSE_APP_ID, PARSE_JS_KEY);
-Parse.serverURL = PARSE_SERVER_URL;
-
-Parse.localDatastoreEnabled = true;
-Parse.User.enableRevocableSessionInBackground = true;
 
 class App extends Component {
 
