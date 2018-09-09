@@ -1,12 +1,16 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 import firebase from "firebase";
 import {Container} from "reactstrap";
-import PropTypes from "prop-types";
 
 import {PAGE_USER_SIGN_UP} from "../../App";
 import {UserLoginForm} from "../users/components/loginForm";
 
 class LoginPage extends Component {
+
+	handleSignUp = () => {
+		return this.props.history.push(PAGE_USER_SIGN_UP);
+	};
 
 	handleUserLogin = (username, password, updateAuthenticated) => {
 		return firebase.auth().signInWithEmailAndPassword(username, password)
@@ -16,15 +20,12 @@ class LoginPage extends Component {
 				updateAuthenticated(result.user.uid); // set state on App.js
 			})
 			.catch(function (error) {
-				console.error("Error logging in.");
+				console.error(error);
 				localStorage.removeItem("userAuth");
 				updateAuthenticated(null);
 				throw error;
 			});
-	};
-
-	handleSignUp = () => {
-		return this.props.history.push(PAGE_USER_SIGN_UP);
+		throw new Error("BAM BIAATCH!");
 	};
 
 	render() {

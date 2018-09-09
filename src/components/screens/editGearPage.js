@@ -1,11 +1,14 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Container} from "reactstrap";
+import {Alert, Container} from "reactstrap";
 import confirm from 'reactstrap-confirm';
 
 import {db, PAGE_LIST} from "../../App";
 import {EditGearForm} from "../form/editGearForm";
 import Loading from "../common/loadingComponent";
+import {Redirect} from "react-router-dom";
+import {UserLoginForm} from "../users/components/loginForm";
+import Header from "../layout/header";
 
 class EditGearPage extends Component {
 
@@ -19,6 +22,7 @@ class EditGearPage extends Component {
 
 	componentDidMount() {
 		const gearId = this.props.match.params.key;
+		// TODO Handle errors
 		db.collection('gear-items').doc(gearId).get()
 			.then(snapshot => {
 				// IMPORTANT: Add ID to GearItem
@@ -55,43 +59,42 @@ class EditGearPage extends Component {
 			cancelColor: 'link'
 		});
 		if (result) {
-			db.collection('gear-items').doc(id)
+			return db.collection('gear-items').doc(id)
 				.delete()
-				.then(() => {
-				})
-				.catch(e => {
-					console.error(e);
-					this.setState({
-						error: "Could not delete gear."
-					});
+				.catch(error => {
+					console.error('Error Code:', error.code);
+					throw new Error("Error deleting gear.");
 				});
-			this.props.history.push(PAGE_LIST);
 		}
 	};
 
 	handleUpdateGear = (values) => {
-		db.collection('gear-items').doc(values.id)
-			.update(values).then(() => {
-			console.info('Gear updated');
-			return this.props.history.push(PAGE_LIST);
-		}).catch(e => {
-			console.error(e);
-			this.state({
-				error: "Could not update gear."
+		return db.collection('gear-items').doc(values.id)
+			.update(values)
+			.catch(error => {
+				console.log ("Error Code:", error.code);
+				let errorMessage = "Error updating gear.";
+				switch (error.code) {
+					case 'not-found': {
+						errorMessage = "Gear not found."
+					}
+				}
+				throw new Error(errorMessage);
 			});
-		});
 	};
 
 	render() {
 		const {handleCancel, handleDeleteGear, handleUpdateGear} = this;
-		const {gearItem, loading, error} = this.state;
+		const {gearItem, loading} = this.state;
 
-		if (!gearItem) throw new Error("Gear item does not exist");
-		if (error) throw new Error(error);
+		if (!gearItem) return <Container>
+			<Alert color="danger">Could not find Gear!</Alert>
+		</Container>;
 
 		return (<Loading loading={loading}>
 			<Container>
 				<EditGearForm
+					{...this.props}
 					gearItem={gearItem}
 					handleCancel={handleCancel}
 					handleDeleteGear={handleDeleteGear}
@@ -102,15 +105,19 @@ class EditGearPage extends Component {
 	}
 }
 
+EditGearPage.defaultProps = {
+	success: false
+};
+
 EditGearPage.propTypes = {
-	history: PropTypes.object.isRequired,
-	props: PropTypes.shape({
+	history: PropTypes.object.isRequired, props: PropTypes.shape({
 		match: PropTypes.shape({
 			params: PropTypes.shape({
 				key: PropTypes.string.isRequired
 			})
 		})
-	})
+	}),
+	success: PropTypes.bool.isRequired
 };
 
 export default EditGearPage;

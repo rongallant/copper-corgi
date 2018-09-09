@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import {db, PAGE_LIST} from "../../App";
 import {AddGearForm} from "../form/addGearForm";
+import {UserLoginForm} from "../users/components/loginForm";
 
 class AddGearPage extends Component {
 
@@ -12,11 +13,10 @@ class AddGearPage extends Component {
 	};
 
 	handleAddGear = (values) => {
-		db.collection('gear-items').add(values).then(() => {
-			return this.props.history.push(PAGE_LIST);
-		}).catch(e => {
-			console.error(e);
-			throw new Error("Could not add gear.");
+		db.collection('gear-items').add(values)
+			.catch(error => {
+			console.error(error);
+			throw new Error("Error adding gear.");
 		});
 	};
 
@@ -28,11 +28,12 @@ class AddGearPage extends Component {
 		return (<Container>
 			<h3>Add Gear</h3>
 			<AddGearForm
-				isEditForm={false}
-				history={history}
+				{...this.props}
 				gearItem={gearItem}
-				handleCancel={handleCancel}
 				handleAddGear={handleAddGear}
+				handleCancel={handleCancel}
+				history={history}
+				isEditForm={false}
 			/>
 		</Container>);
 	}

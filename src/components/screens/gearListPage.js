@@ -26,8 +26,8 @@ class GearListPage extends React.Component {
 				});
 				this.setState({gearList, loading: false});
 			})
-			.catch((err) => {
-				console.error('Error getting documents', err);
+			.catch(error => {
+				console.error(error);
 				throw new Error("Error getting gear.");
 			});
 	}

@@ -1,6 +1,6 @@
 import {withFormik} from "formik";
 
-import {GearForm} from "./components/gearForm";
+import GearForm from "./components/gearForm";
 
 export const EditGearForm = withFormik({
 	mapPropsToValues: (props) => {
@@ -9,6 +9,7 @@ export const EditGearForm = withFormik({
 		}
 		return {};
 	},
+
 	validate: values => {
 		let errors = {};
 		if (!values.category) {
@@ -22,9 +23,19 @@ export const EditGearForm = withFormik({
 		}
 		return errors;
 	},
-	handleSubmit: (values, {props, setSubmitting, setErrors}) => {
-		props.handleUpdateGear(values, props, setErrors);
+
+	handleSubmit: async (values, {props, setFormikState, setSubmitting, setErrors}) => {
+		try {
+			setFormikState({loading: true});
+			await props.handleUpdateGear(values);
+			setFormikState({success: true});
+		} catch (error) {
+			console.log(error);
+			setFormikState({success: false, loading: false});
+			setErrors({formError: error.message});
+		}
 		setSubmitting(false);
 	},
+
 	displayName: 'EditGearForm',
 })(GearForm);
