@@ -8,7 +8,7 @@ class UserSignUpPage extends Component {
 
 	handleAddUser = (email, password, updateAuthenticated) => {
 		return firebase.auth().createUserWithEmailAndPassword(email, password)
-			.then(result => {
+			.then(() => {
 				localStorage.setItem("userAuth", "true");
 				updateAuthenticated(true); // set state on App.js
 			})
