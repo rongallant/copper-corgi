@@ -1,7 +1,9 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
+
 import TextField from "../../../common/fields/textField";
 
-export default class UserNameField extends Component {
+class UserNameField extends Component {
 
 	render() {
 		const {errors, id, touched} = this.props;
@@ -15,3 +17,11 @@ export default class UserNameField extends Component {
 		/>);
 	}
 }
+
+UserNameField.propTypes = {
+	errors: PropTypes.object,
+	id: PropTypes.string.isRequired,
+	touched: PropTypes.object
+};
+
+export default UserNameField;

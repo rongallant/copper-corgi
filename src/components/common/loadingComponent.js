@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {Modal} from "reactstrap";
+import PropTypes from "prop-types";
 
-export default class Loading extends Component {
+class Loading extends Component {
 
 	render() {
 		const {children, loading, preventLoadingChildren} = this.props;
@@ -30,3 +31,11 @@ export default class Loading extends Component {
 		}
 	}
 }
+
+Loading.propTypes = {
+	children: PropTypes.node,
+	loading: PropTypes.bool,
+	preventLoadingChildren: PropTypes.bool
+};
+
+export default Loading;

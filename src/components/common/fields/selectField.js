@@ -1,7 +1,8 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {FormFeedback, FormGroup, FormText, Label, CustomInput} from "reactstrap";
 
-export default class SelectField extends Component {
+class SelectField extends Component {
 
 	render() {
 		const {errors, help, id, label, touched, value} = this.props;
@@ -22,3 +23,14 @@ export default class SelectField extends Component {
 			</FormGroup>);
 	}
 }
+
+SelectField.propTypes = {
+	errors: PropTypes.object,
+	help: PropTypes.string,
+	id: PropTypes.string,
+	label: PropTypes.string,
+	touched: PropTypes.object,
+	value: PropTypes.string
+};
+
+export default SelectField;

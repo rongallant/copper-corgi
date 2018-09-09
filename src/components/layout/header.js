@@ -1,15 +1,14 @@
 import React, {Component} from "react";
-import {Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink as Link, UncontrolledCollapse} from "reactstrap";
 import {NavLink} from "react-router-dom";
+import PropTypes from "prop-types";
+import {Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink as Link, UncontrolledCollapse} from "reactstrap";
 
 import {PAGE_ADD, PAGE_HOME, PAGE_LIST, PAGE_LOGIN} from "../../App";
 import {logout} from "../../services/authentication";
 
-export default class Header extends Component {
+class Header extends Component {
 
-	handleLogout = (e) => {
-		console.log('App.handleLogout');
-		e.preventDefault();
+	handleLogout = () => {
 		this.props.updateAuthenticated(logout())
 	};
 
@@ -80,3 +79,14 @@ export default class Header extends Component {
 		</header>);
 	}
 }
+
+Header.defaultProps = {
+	isAuthenticated: false
+};
+
+Header.propTypes = {
+	isAuthenticated: PropTypes.bool.isRequired,
+	updateAuthenticated: PropTypes.func.isRequired
+};
+
+export default Header;

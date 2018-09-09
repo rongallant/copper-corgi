@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {FormFeedback, FormGroup, FormText, Label, Input} from "reactstrap";
 
 class TextField extends Component {
@@ -22,5 +23,14 @@ class TextField extends Component {
 			</FormGroup>);
 	}
 }
+
+TextField.propTypes = {
+	errors: PropTypes.object,
+	help: PropTypes.string,
+	id: PropTypes.string,
+	label: PropTypes.string,
+	touched: PropTypes.object,
+	value: PropTypes.any
+};
 
 export default TextField;

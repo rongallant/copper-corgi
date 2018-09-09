@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import {Container} from "reactstrap";
-
-import {AddGearForm} from "../form/addGearForm";
-import {db, PAGE_LIST} from "../../App";
 import PropTypes from "prop-types";
-import EditGearPage from "./editGearPage";
+
+import {db, PAGE_LIST} from "../../App";
+import {AddGearForm} from "../form/addGearForm";
 
 class AddGearPage extends Component {
 

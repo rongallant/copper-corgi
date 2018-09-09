@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import {Container} from "reactstrap";
+import PropTypes from "prop-types";
 
-export default class ErrorBoundary extends Component {
+class ErrorBoundary extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {hasError: false, errorMessage: null};
 	}
 
-	componentDidCatch(error, info) {
+	componentDidCatch(error) {
 		console.error("****************************************");
 		console.error(`ErrorBoundary ${error.message}`);
 		console.error("****************************************");
@@ -29,3 +30,9 @@ export default class ErrorBoundary extends Component {
 		return this.props.children;
 	}
 }
+
+ErrorBoundary.propTypes = {
+	children: PropTypes.node.isRequired
+};
+
+export default ErrorBoundary;
