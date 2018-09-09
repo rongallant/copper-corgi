@@ -14,7 +14,8 @@ import EditGearPage from "./components/screens/editGearPage";
 import ErrorBoundary from './components/common/error-handler/errorBoundary';
 import {firebaseConfig} from "./firebaseConfig";
 
-const USER_AUTH_KEY = "userAuth";
+export const USER_AUTH_KEY = "userAuth";
+export const DB_USER_GEAR_PATH = ""
 
 export const PAGE_HOME = "/";
 export const PAGE_LOGIN = "/login";

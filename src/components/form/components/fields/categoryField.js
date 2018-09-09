@@ -23,8 +23,8 @@ export default class CategoryField extends Component {
 				});
 				this.setState({gearCategories});
 			})
-			.catch((err) => {
-				console.error('Error getting categories', err);
+			.catch(error => {
+				console.error('Error Code:', error.code);
 				throw new Error("Error getting categories.");
 			});
 	}

@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import {Alert, Container} from "reactstrap";
 import confirm from 'reactstrap-confirm';
 
-import {db, PAGE_LIST} from "../../App";
+import {db, PAGE_LIST, USER_AUTH_KEY} from "../../App";
 import {EditGearForm} from "../form/editGearForm";
 import Loading from "../common/loadingComponent";
 import {Redirect} from "react-router-dom";
 import {UserLoginForm} from "../users/components/loginForm";
 import Header from "../layout/header";
+import * as firebase from "firebase";
 
 class EditGearPage extends Component {
 
@@ -21,9 +22,12 @@ class EditGearPage extends Component {
 	}
 
 	componentDidMount() {
+		const userId = localStorage.getItem(USER_AUTH_KEY);
 		const gearId = this.props.match.params.key;
 		// TODO Handle errors
-		db.collection('gear-items').doc(gearId).get()
+		db.collection('user-gear')
+			.doc(userId)
+			.collection('gear-items').doc(gearId).get()
 			.then(snapshot => {
 				// IMPORTANT: Add ID to GearItem
 				const gearItem = snapshot.data();
@@ -38,8 +42,8 @@ class EditGearPage extends Component {
 					});
 				}
 			})
-			.catch((err) => {
-				console.error(err);
+			.catch(error => {
+				console.error('Error Code:', error.code);
 				this.setState({
 					error: "Error getting gear.", gearItem: null, loading: false
 				});
@@ -59,7 +63,10 @@ class EditGearPage extends Component {
 			cancelColor: 'link'
 		});
 		if (result) {
-			return db.collection('gear-items').doc(id)
+			const userId = localStorage.getItem(USER_AUTH_KEY);
+			db.collection('user-gear')
+				.doc(userId)
+				.collection('gear-items').doc(id)
 				.delete()
 				.catch(error => {
 					console.error('Error Code:', error.code);
@@ -69,7 +76,10 @@ class EditGearPage extends Component {
 	};
 
 	handleUpdateGear = (values) => {
-		return db.collection('gear-items').doc(values.id)
+		const userId = localStorage.getItem(USER_AUTH_KEY);
+		return db.collection('user-gear')
+			.doc(userId)
+			.collection('gear-items').doc(values.id)
 			.update(values)
 			.catch(error => {
 				console.log ("Error Code:", error.code);
