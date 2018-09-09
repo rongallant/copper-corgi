@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import firebase from "firebase";
 import {Container} from "reactstrap";
 
-import {PAGE_USER_SIGN_UP} from "../../App";
+import {PAGE_USER_SIGN_UP, USER_AUTH_KEY} from "../../App";
 import {UserLoginForm} from "../users/components/loginForm";
 
 class LoginPage extends Component {
@@ -16,16 +16,15 @@ class LoginPage extends Component {
 		return firebase.auth().signInWithEmailAndPassword(username, password)
 			.then(result => {
 				console.info("Logged in.");
-				localStorage.setItem("userAuth", "true");
+				localStorage.setItem(USER_AUTH_KEY, result.user.uid);
 				updateAuthenticated(result.user.uid); // set state on App.js
 			})
-			.catch(function (error) {
-				console.error(error);
-				localStorage.removeItem("userAuth");
+			.catch(error => {
+				console.error('Error Code:', error.code);
+				localStorage.removeItem(USER_AUTH_KEY);
 				updateAuthenticated(null);
 				throw error;
 			});
-		throw new Error("BAM BIAATCH!");
 	};
 
 	render() {
@@ -45,8 +44,7 @@ class LoginPage extends Component {
 }
 
 LoginPage.propTypes = {
-	history: PropTypes.object.isRequired,
-	updateAuthenticated: PropTypes.func.isRequired
+	history: PropTypes.object.isRequired, updateAuthenticated: PropTypes.func.isRequired
 };
 
 export default LoginPage;
