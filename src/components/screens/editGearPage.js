@@ -114,4 +114,3 @@ EditGearPage.propTypes = {
 };
 
 export default EditGearPage;
-
