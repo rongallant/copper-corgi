@@ -30,7 +30,6 @@ export const EditGearForm = withFormik({
 			await props.handleUpdateGear(values);
 			setFormikState({success: true});
 		} catch (error) {
-			console.log(error);
 			setFormikState({success: false, loading: false});
 			setErrors({formError: error.message});
 		}
