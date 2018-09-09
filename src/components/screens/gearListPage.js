@@ -1,11 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {Container, Table} from 'reactstrap';
 
-import {displayUnit} from "../../services/displayUtils";
 import {db, PAGE_EDIT_BASE} from "../../App";
+import {displayUnit} from "../../services/displayUtils";
 import Loading from "../common/loadingComponent";
 
-export default class GearListPage extends React.Component {
+class GearListPage extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -74,3 +75,9 @@ export default class GearListPage extends React.Component {
 		</Loading>);
 	}
 }
+
+GearListPage.propTypes = {
+	history: PropTypes.object.isRequired
+};
+
+export default GearListPage;

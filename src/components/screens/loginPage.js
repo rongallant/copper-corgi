@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import firebase from "firebase";
-
-import {UserLoginForm} from "../users/components/loginForm";
-import {PAGE_USER_SIGN_UP} from "../../App";
 import {Container} from "reactstrap";
+import PropTypes from "prop-types";
 
-export default class LoginPage extends Component {
+import {PAGE_USER_SIGN_UP} from "../../App";
+import {UserLoginForm} from "../users/components/loginForm";
+
+class LoginPage extends Component {
 
 	handleUserLogin = (username, password, updateAuthenticated) => {
 		return firebase.auth().signInWithEmailAndPassword(username, password)
@@ -41,3 +42,10 @@ export default class LoginPage extends Component {
 		</Container>)
 	}
 }
+
+LoginPage.propTypes = {
+	history: PropTypes.object.isRequired,
+	updateAuthenticated: PropTypes.func.isRequired
+};
+
+export default LoginPage;

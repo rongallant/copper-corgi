@@ -1,16 +1,10 @@
-// editFormMenu.js
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {
-	Navbar,
-	Nav,
-	UncontrolledDropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownToggle,
-	NavLink
+	Navbar, Nav, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle
 } from "reactstrap";
 
-export default class EditFormMenu extends Component {
+class EditFormMenu extends Component {
 
 	render() {
 		const {gearId, handleDeleteGear, handleReset} = this.props;
@@ -23,19 +17,15 @@ export default class EditFormMenu extends Component {
 						<i className="fas fa-ellipsis-v"/>
 					</DropdownToggle>
 					<DropdownMenu right>
-						<DropdownItem>
-							<NavLink
+						<DropdownItem
 							onClick={() => handleDeleteGear(gearId)}>
-								<i className="far fa-trash-alt"/>
+							<i className="far fa-trash-alt text-danger"/>
 							Delete
-							</NavLink>
 						</DropdownItem>
-						<DropdownItem>
-							<NavLink
-								onClick={handleReset}>
-								<i className="far fa-trash-alt"/>
-								Reset
-							</NavLink>
+						<DropdownItem
+							onClick={handleReset}>
+							<i className="fas fa-undo"/>
+							Reset
 						</DropdownItem>
 					</DropdownMenu>
 				</UncontrolledDropdown>
@@ -43,3 +33,11 @@ export default class EditFormMenu extends Component {
 		</Navbar>);
 	}
 }
+
+EditFormMenu.propTypes = {
+	gearId: PropTypes.string.isRequired,
+	handleDeleteGear: PropTypes.func.isRequired,
+	handleReset: PropTypes.func.isRequired
+};
+
+export default EditFormMenu;

@@ -22,7 +22,7 @@ export default class Loading extends Component {
 					contentClassName="modal-content-loading"
 					fade={false}>
 					<div>
-						<i className="fa fa-spinner fa-spin fa-3x"
+						<i className="fas fa-spinner fa-spin fa-3x"
 							style={{color: '#fff'}}/>
 					</div>
 				</Modal>

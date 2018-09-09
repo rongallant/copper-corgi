@@ -1,9 +1,10 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import {UserSignUpForm} from '../users/components/userSignUpForm';
 import {PAGE_LIST} from "../../App";
+import {UserSignUpForm} from '../users/components/userSignUpForm';
 
-export default class UserSignUpPage extends Component {
+class UserSignUpPage extends Component {
 
 	handleAddUser = (values) => {
 		console.log('handleAddUser: values', values);
@@ -21,3 +22,9 @@ export default class UserSignUpPage extends Component {
 			/></div>)
 	}
 }
+
+UserSignUpPage.propTypes = {
+	history: PropTypes.object.isRequired
+};
+
+export default UserSignUpPage;

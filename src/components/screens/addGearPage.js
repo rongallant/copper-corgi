@@ -3,8 +3,10 @@ import {Container} from "reactstrap";
 
 import {AddGearForm} from "../form/addGearForm";
 import {db, PAGE_LIST} from "../../App";
+import PropTypes from "prop-types";
+import EditGearPage from "./editGearPage";
 
-export default class AddGearPage extends Component {
+class AddGearPage extends Component {
 
 	handleCancel = () => {
 		this.props.history.push(PAGE_LIST);
@@ -36,3 +38,9 @@ export default class AddGearPage extends Component {
 		</Container>);
 	}
 }
+
+AddGearPage.propTypes = {
+	history: PropTypes.object.isRequired
+};
+
+export default AddGearPage;

@@ -1,13 +1,13 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {Container} from "reactstrap";
 import confirm from 'reactstrap-confirm';
 
-import {EditGearForm} from "../form/editGearForm";
 import {db, PAGE_LIST} from "../../App";
-import EditFormMenu from "../form/components/editFormMenu";
+import {EditGearForm} from "../form/editGearForm";
 import Loading from "../common/loadingComponent";
 
-export default class EditGearPage extends Component {
+class EditGearPage extends Component {
 
 	constructor(props) {
 		super(props);
@@ -84,26 +84,34 @@ export default class EditGearPage extends Component {
 
 	render() {
 		const {handleCancel, handleDeleteGear, handleUpdateGear} = this;
-		const {history} = this.props;
 		const {gearItem, loading, error} = this.state;
 
-		// if (loading) return <Loading/>;
 		if (!gearItem) throw new Error("Gear item does not exist");
 		if (error) throw new Error(error);
 
 		return (<Loading loading={loading}>
 			<Container>
-				<EditFormMenu
-					gearId={gearItem.id}
-					handleDeleteGear={handleDeleteGear}/>
 				<EditGearForm
-					isEditForm={true}
-					history={history}
 					gearItem={gearItem}
 					handleCancel={handleCancel}
+					handleDeleteGear={handleDeleteGear}
 					handleUpdateGear={handleUpdateGear}
 				/>
 			</Container>
 		</Loading>);
 	}
 }
+
+EditGearPage.propTypes = {
+	history: PropTypes.object.isRequired,
+	props: PropTypes.shape({
+		match: PropTypes.shape({
+			params: PropTypes.shape({
+				key: PropTypes.string.isRequired
+			})
+		})
+	})
+};
+
+export default EditGearPage;
+

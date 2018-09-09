@@ -1,6 +1,20 @@
 /* App Theme
 -------------------------------------------------- */
 
+a,
+button[type="submit"] {
+  cursor: pointer;
+}
+
+.dropdown.nav-item .nav-link[aria-haspopup="true"] {
+  & > i.fa-ellipsis-v {
+    right: -23px;
+    padding-right: 0;
+    position: relative;
+  }
+  color: $black;
+}
+
 // Fix select rounded corners.
 .custom-select {
   -webkit-appearance: none;
