@@ -10,13 +10,13 @@ export const AddGearForm = withFormik({
 	validate: values => {
 		let errors = {};
 		if (!values.category) {
-			errors.category = 'Required';
+			errors.category = "Required";
 		}
 		if (!values.name) {
-			errors.name = 'Required';
+			errors.name = "Required";
 		}
 		if (!values.weight) {
-			errors.weight = 'Required';
+			errors.weight = "Required";
 		}
 		return errors;
 	},
@@ -33,7 +33,7 @@ export const AddGearForm = withFormik({
 		setSubmitting(false);
 	},
 
-	displayName: 'AddGearForm',
+	displayName: "AddGearForm",
 })(GearForm);
 
 
