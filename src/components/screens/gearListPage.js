@@ -2,7 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Container, Table} from 'reactstrap';
 
-import {db, PAGE_EDIT_BASE, USER_AUTH_KEY, userId} from "../../App";
+import {
+	COLLECTION_GEAR_ITEMS,
+	COLLECTION_USER_GEAR,
+	db,
+	PAGE_EDIT_BASE,
+	USER_AUTH_KEY,
+	userId
+} from "../../App";
 import {displayUnit} from "../../services/displayUtils";
 import Loading from "../common/loadingComponent";
 import firebase from "firebase";
@@ -18,9 +25,9 @@ class GearListPage extends React.Component {
 
 	async componentDidMount() {
 		const userId = localStorage.getItem(USER_AUTH_KEY);
-		db.collection('user-gear')
+		db.collection(COLLECTION_USER_GEAR)
 			.doc(userId)
-			.collection('gear-items').get()
+			.collection(COLLECTION_GEAR_ITEMS).get()
 			.then(snapshot => {
 				if (snapshot) {
 					const gearList = [];

@@ -2,7 +2,10 @@ import React, {Component} from "react";
 import {Container} from "reactstrap";
 import PropTypes from "prop-types";
 
-import {db, PAGE_LIST, USER_AUTH_KEY} from "../../App";
+import {
+	COLLECTION_GEAR_ITEMS,
+	COLLECTION_USER_GEAR, db, PAGE_LIST, USER_AUTH_KEY
+} from "../../App";
 import {AddGearForm} from "../form/addGearForm";
 
 class AddGearPage extends Component {
@@ -13,9 +16,9 @@ class AddGearPage extends Component {
 
 	handleAddGear = (values) => {
 		const userId = localStorage.getItem(USER_AUTH_KEY);
-		db.collection('user-gear')
+		db.collection(COLLECTION_USER_GEAR)
 			.doc(userId)
-			.collection('gear-items').add(values)
+			.collection(COLLECTION_GEAR_ITEMS).add(values)
 			.catch(error => {
 				console.error('Error Code:', error.code);
 				throw new Error("Error adding gear.");

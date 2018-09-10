@@ -15,7 +15,8 @@ import ErrorBoundary from './components/common/error-handler/errorBoundary';
 import {firebaseConfig} from "./firebaseConfig";
 
 export const USER_AUTH_KEY = "userAuth";
-export const DB_USER_GEAR_PATH = ""
+export const COLLECTION_USER_GEAR = "user-gear";
+export const COLLECTION_GEAR_ITEMS = "gear-items";
 
 export const PAGE_HOME = "/";
 export const PAGE_LOGIN = "/login";

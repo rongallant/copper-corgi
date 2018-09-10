@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import {Alert, Container} from "reactstrap";
 import confirm from 'reactstrap-confirm';
 
-import {db, PAGE_LIST, USER_AUTH_KEY} from "../../App";
+import {
+	COLLECTION_GEAR_ITEMS,
+	COLLECTION_USER_GEAR, db, PAGE_LIST, USER_AUTH_KEY
+} from "../../App";
 import {EditGearForm} from "../form/editGearForm";
 import Loading from "../common/loadingComponent";
 
@@ -21,9 +24,9 @@ class EditGearPage extends Component {
 		const userId = localStorage.getItem(USER_AUTH_KEY);
 		const gearId = this.props.match.params.key;
 		// TODO Handle errors
-		db.collection('user-gear')
+		db.collection(COLLECTION_USER_GEAR)
 			.doc(userId)
-			.collection('gear-items').doc(gearId).get()
+			.collection(COLLECTION_GEAR_ITEMS).doc(gearId).get()
 			.then(snapshot => {
 				// IMPORTANT: Add ID to GearItem
 				const gearItem = snapshot.data();
@@ -60,9 +63,9 @@ class EditGearPage extends Component {
 		});
 		if (result) {
 			const userId = localStorage.getItem(USER_AUTH_KEY);
-			db.collection('user-gear')
+			db.collection(COLLECTION_USER_GEAR)
 				.doc(userId)
-				.collection('gear-items').doc(id)
+				.collection(COLLECTION_GEAR_ITEMS).doc(id)
 				.delete()
 				.catch(error => {
 					console.error('Error Code:', error.code);
@@ -73,9 +76,9 @@ class EditGearPage extends Component {
 
 	handleUpdateGear = (values) => {
 		const userId = localStorage.getItem(USER_AUTH_KEY);
-		return db.collection('user-gear')
+		return db.collection(COLLECTION_USER_GEAR)
 			.doc(userId)
-			.collection('gear-items').doc(values.id)
+			.collection(COLLECTION_GEAR_ITEMS).doc(values.id)
 			.update(values)
 			.catch(error => {
 				console.log ("Error Code:", error.code);
