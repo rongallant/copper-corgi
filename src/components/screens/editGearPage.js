@@ -1,11 +1,14 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Alert, Container} from "reactstrap";
-import confirm from 'reactstrap-confirm';
+import confirm from "reactstrap-confirm";
 
 import {
 	COLLECTION_GEAR_ITEMS,
-	COLLECTION_USER_GEAR, db, PAGE_LIST, USER_AUTH_KEY
+	COLLECTION_USER_GEAR,
+	db,
+	PAGE_LIST,
+	USER_AUTH_KEY
 } from "../../App";
 import {EditGearForm} from "../form/editGearForm";
 import Loading from "../common/loadingComponent";
@@ -84,9 +87,12 @@ class EditGearPage extends Component {
 				console.log ("Error Code:", error.code);
 				let errorMessage = "Error updating gear.";
 				switch (error.code) {
-					case 'not-found': {
-						errorMessage = "Gear not found."
-					}
+					case "not-found":
+						errorMessage = "Gear not found.";
+						break;
+					default:
+						let errorMessage = "Error updating gear.";
+						break;
 				}
 				throw new Error(errorMessage);
 			});

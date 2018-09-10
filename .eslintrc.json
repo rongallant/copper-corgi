@@ -20,6 +20,7 @@
 		"plugin:react/recommended"
 	],
 	"rules": {
+		"allowNamedFunctions": true,
 		"allowUnboundThis": true
 	}
 }

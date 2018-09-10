@@ -7,12 +7,10 @@ import {
 	COLLECTION_USER_GEAR,
 	db,
 	PAGE_EDIT_BASE,
-	USER_AUTH_KEY,
-	userId
+	USER_AUTH_KEY
 } from "../../App";
 import {displayUnit} from "../../services/displayUtils";
 import Loading from "../common/loadingComponent";
-import firebase from "firebase";
 
 class GearListPage extends React.Component {
 
