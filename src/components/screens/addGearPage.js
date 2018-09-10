@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 import {db, PAGE_LIST, USER_AUTH_KEY} from "../../App";
 import {AddGearForm} from "../form/addGearForm";
-import {UserLoginForm} from "../users/components/loginForm";
 
 class AddGearPage extends Component {
 

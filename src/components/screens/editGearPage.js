@@ -6,10 +6,6 @@ import confirm from 'reactstrap-confirm';
 import {db, PAGE_LIST, USER_AUTH_KEY} from "../../App";
 import {EditGearForm} from "../form/editGearForm";
 import Loading from "../common/loadingComponent";
-import {Redirect} from "react-router-dom";
-import {UserLoginForm} from "../users/components/loginForm";
-import Header from "../layout/header";
-import * as firebase from "firebase";
 
 class EditGearPage extends Component {
 
