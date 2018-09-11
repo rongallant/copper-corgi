@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Container, Table} from 'reactstrap';
+import {Container, Table} from "reactstrap";
 
 import {
 	COLLECTION_GEAR_ITEMS,
@@ -14,14 +14,14 @@ import Loading from "../common/loadingComponent";
 
 class GearListPage extends React.Component {
 
-	constructor(props) {
+	constructor (props) {
 		super(props);
 		this.state = {
 			gearList: [], loading: true, redirect: true
 		};
 	}
 
-	async componentDidMount() {
+	async componentDidMount () {
 		const userId = localStorage.getItem(USER_AUTH_KEY);
 		db.collection(COLLECTION_USER_GEAR)
 			.doc(userId)
@@ -38,17 +38,16 @@ class GearListPage extends React.Component {
 				}
 			})
 			.catch(error => {
-				console.error('Error Code:', error);
+				console.error("Error Code:", error);
 				throw new Error("Error getting gear.");
 			});
 	}
-
 
 	handleEditGearLink = (gearItem) => {
 		this.props.history.push(`${PAGE_EDIT_BASE}/${gearItem.id}`);
 	};
 
-	render() {
+	render () {
 		const {handleEditGearLink} = this;
 		const {gearList, loading} = this.state;
 		const hasResults = gearList.length > 0;
@@ -74,12 +73,13 @@ class GearListPage extends React.Component {
 					</tr>)}
 					{hasResults && gearList.map((gear, index) => {
 						const {id, name, category, weight} = gear;
-						return (<tr key={id} onClick={() => handleEditGearLink(gear)}>
-							<th scope="row">{index + 1}</th>
-							<td>{name}</td>
-							<td>{displayUnit(weight)}</td>
-							<td>{category}</td>
-						</tr>)
+						return (
+							<tr key={id} onClick={() => handleEditGearLink(gear)}>
+								<th scope="row">{index + 1}</th>
+								<td>{name}</td>
+								<td>{displayUnit(weight)}</td>
+								<td>{category}</td>
+							</tr>);
 					})}
 
 				</tbody>

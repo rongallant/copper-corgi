@@ -1,7 +1,15 @@
 import React, {Component} from "react";
 import {NavLink} from "react-router-dom";
 import PropTypes from "prop-types";
-import {Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink as Link, UncontrolledCollapse} from "reactstrap";
+import {
+	Nav,
+	Navbar,
+	NavbarBrand,
+	NavbarToggler,
+	NavItem,
+	NavLink as Link,
+	UncontrolledCollapse
+} from "reactstrap";
 
 import {PAGE_ADD, PAGE_HOME, PAGE_LIST, PAGE_LOGIN} from "../../App";
 import {logout} from "../../services/authentication";
@@ -9,7 +17,7 @@ import {logout} from "../../services/authentication";
 class Header extends Component {
 
 	handleLogout = () => {
-		this.props.updateAuthenticated(logout())
+		this.props.updateAuthenticated(logout());
 	};
 
 	renderMenu = (authenticated) => {
@@ -39,22 +47,21 @@ class Header extends Component {
 						Logout
 					</Link>
 				</NavItem>
-			</Nav>
-		} else {
-			return <Nav className="ml-auto" navbar>
-				<NavItem>
-					<NavLink
-						className="nav-link"
-						activeClassName="active"
-						to={PAGE_LOGIN}>
-						Login
-					</NavLink>
-				</NavItem>
-			</Nav>
+			</Nav>;
 		}
+		return <Nav className="ml-auto" navbar>
+			<NavItem>
+				<NavLink
+					className="nav-link"
+					activeClassName="active"
+					to={PAGE_LOGIN}>
+					Login
+				</NavLink>
+			</NavItem>
+		</Nav>;
 	};
 
-	render() {
+	render () {
 		const {renderMenu} = this;
 		const {isAuthenticated} = this.props;
 
@@ -85,7 +92,7 @@ Header.defaultProps = {
 };
 
 Header.propTypes = {
-	isAuthenticated: PropTypes.string,
+	isAuthenticated: PropTypes.bool,
 	updateAuthenticated: PropTypes.func.isRequired
 };
 

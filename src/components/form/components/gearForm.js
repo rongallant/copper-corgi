@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Alert, Button, Col, Row} from 'reactstrap';
+import {Alert, Button, Col, Row} from "reactstrap";
 import {Redirect} from "react-router-dom";
-import _ from 'lodash';
+import _ from "lodash";
 
 import CategoryField from "./fields/categoryField";
 import DescriptionField from "./fields/descriptionField";
@@ -10,6 +10,7 @@ import EditFormMenu from "./editFormMenu";
 import NameField from "./fields/nameField";
 import WeightField from "./fields/weightField";
 import {PAGE_LIST} from "../../../App";
+import GearTagsField from "./fields/gearTagsField";
 
 class GearForm extends Component {
 
@@ -36,6 +37,17 @@ class GearForm extends Component {
 				handleReset={handleReset}
 			/>}
 			{showErrors(errors)}
+
+			<GearTagsField
+				id="tags"
+				label="Tags"
+				onChange={handleChange}
+				onBlur={handleBlur}
+				errors={errors}
+				touched={touched}
+			/>
+
+
 			<CategoryField
 				value={category}
 				onChange={handleChange}
@@ -116,6 +128,7 @@ GearForm.propTypes = {
 	handleSubmit: PropTypes.func,
 	handleReset: PropTypes.func,
 	isSubmitting: PropTypes.bool,
+	success: PropTypes.bool,
 	touched: PropTypes.object,
 	values: PropTypes.object.isRequired,
 };
