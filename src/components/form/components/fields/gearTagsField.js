@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {AsyncTypeahead} from "react-bootstrap-typeahead";
+import {FormFeedback, FormGroup, FormText, Label} from "reactstrap";
 
 import {
 	COLLECTION_GEAR_TAGS,
@@ -52,27 +53,44 @@ export default class GearTagsField extends Component {
 
 	render () {
 		const {handleSearch} = this;
-		const {id, label, errors, touched} = this.props;
+		const {handleBlur, handleChange, help, id, label, errors, touched} = this.props;
 
-		return (<AsyncTypeahead
-			{...this.state}
-			allowNew={true}
-			id={id}
-			invalid={errors[id] && touched[id]}
-			labelKey="tag"
-			label={label}
-			multiple
-			name={id}
-			onSearch={handleSearch}
-		/>);
+		return (
+			<FormGroup>
+				<Label
+					for={id}>
+					{label}
+				</Label>
+				<AsyncTypeahead
+					{...this.state}
+					allowNew={true}
+					errors={errors}
+					id={id}
+					invalid={errors[id] && touched[id]}
+					labelKey="tag"
+					label={label}
+					multiple
+					name={id}
+					onBlur={handleBlur}
+					onChange={handleChange}
+					onSearch={handleSearch}
+					touched={touched}
+				/>
+				{errors[id] && <FormFeedback>{errors[id]}</FormFeedback>}
+				{help && <FormText>{help}</FormText>}
+			</FormGroup>
+		);
 	}
 }
 
 GearTagsField.propTypes = {
-	handleChange: PropTypes.func.isRequired,
 	errors: PropTypes.object,
+	handleBlur: PropTypes.func,
+	handleChange: PropTypes.func,
+	help: PropTypes.string,
 	id: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
-	tagData: PropTypes.array.isRequired,
+	onBlur: PropTypes.func,
+	onChange: PropTypes.func,
 	touched: PropTypes.func
 };

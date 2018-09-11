@@ -46,8 +46,6 @@ class GearForm extends Component {
 				errors={errors}
 				touched={touched}
 			/>
-
-
 			<CategoryField
 				value={category}
 				onChange={handleChange}
