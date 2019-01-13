@@ -1,20 +1,23 @@
 import React from "react";
-import Route from "react-router-dom/es/Route";
 import PropTypes from "prop-types";
-
-import {Redirect} from "react-router-dom";
+import {Redirect, Route} from "react-router-dom";
 import {isLoggedIn} from "../services/authentication";
+import {withRouter} from "react-router";
 import {PAGE_LOGIN} from "../App";
 
-export const PrivateRoute = ({component: Component, rest}) => (
-	<Route {...rest} render={(props) => (
-		isLoggedIn()
-			? <Component {...props} />
-			: <Redirect to={PAGE_LOGIN}/>
-	)}/>
-);
+class PrivateRoute extends React.Component {
+
+	render() {
+		const {path, component: Component} = this.props;
+		if (isLoggedIn()) {
+			return <Route path={path} component={Component}/>
+		}
+		return <Redirect to={PAGE_LOGIN}/>
+	}
+}
 
 PrivateRoute.propTypes = {
-	component: PropTypes.func,
-	rest: PropTypes.element
+	component: PropTypes.func
 };
+
+export default withRouter(PrivateRoute);

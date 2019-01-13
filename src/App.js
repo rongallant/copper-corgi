@@ -1,10 +1,8 @@
 import React, {Component} from "react";
 import firebase from "firebase";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-
 import Header from "./components/layout/header";
 import Footer from "./components/layout/footer";
-import {PrivateRoute} from "./security/privateRoute";
+import PrivateRoute from "./security/privateRoute";
 import HomePage from "./components/screens/homePage";
 import UserSignUpPage from "./components/screens/userSignUpPage";
 import LoginPage from "./components/screens/loginPage";
@@ -12,7 +10,9 @@ import GearListPage from "./components/screens/gearListPage";
 import AddGearPage from "./components/screens/addGearPage";
 import EditGearPage from "./components/screens/editGearPage";
 import ErrorBoundary from "./components/common/error-handler/errorBoundary";
+import {Route, Switch} from "react-router-dom";
 import {firebaseConfig} from "./firebaseConfig";
+import {PageNotFound} from "./components/screens/404";
 
 export const USER_AUTH_KEY = "userAuth";
 export const COLLECTION_USER_GEAR = "user-gear";
@@ -24,7 +24,7 @@ export const PAGE_LOGIN = "/login";
 export const PAGE_LIST = "/list";
 export const PAGE_ADD = "/add";
 export const PAGE_EDIT_BASE = "/edit";
-export const PAGE_EDIT_PATH = `${PAGE_EDIT_BASE}/:key`;
+export const PAGE_EDIT_PATH = `${PAGE_EDIT_BASE}/:gearId`;
 export const PAGE_USER_SIGN_UP = "/signup";
 
 firebase.initializeApp(firebaseConfig);
@@ -36,14 +36,14 @@ export const db = firestore;
 
 class App extends Component {
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 		this.state = {
 			isAuthenticated: false
 		};
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		const userAuth = localStorage.getItem(USER_AUTH_KEY);
 		this.setState({
 			isAuthenticated: !!userAuth
@@ -56,12 +56,11 @@ class App extends Component {
 		});
 	};
 
-	render () {
+	render() {
 		const {handleLogin, updateAuthenticated} = this;
 		const {isAuthenticated} = this.state;
 
-		return (<Router>
-
+		return (
 			<div id="gearApp">
 				<Header
 					isAuthenticated={isAuthenticated}
@@ -69,13 +68,10 @@ class App extends Component {
 				/>
 				<ErrorBoundary>
 					<Switch>
-						<Route exact
-							path={PAGE_HOME}
-							component={HomePage}
-						/>
+						<Route exact path={PAGE_HOME} component={HomePage}/>
 						<Route
 							path={PAGE_USER_SIGN_UP}
-							render={(props) => <UserSignUpPage
+							render={props => <UserSignUpPage
 								{...props}
 								isAuthenticated={isAuthenticated}
 								updateAuthenticated={updateAuthenticated}
@@ -83,21 +79,29 @@ class App extends Component {
 						/>
 						<Route
 							path={PAGE_LOGIN}
-							render={(props) => <LoginPage
+							render={props => <LoginPage
 								{...props}
 								isAuthenticated={isAuthenticated}
 								updateAuthenticated={updateAuthenticated}
 								handleLogin={handleLogin}
 							/>}
 						/>
-						<PrivateRoute path={PAGE_LIST} component={GearListPage}/>
-						<PrivateRoute path={PAGE_ADD} component={AddGearPage}/>
-						<PrivateRoute path={PAGE_EDIT_PATH} component={EditGearPage}/>
+						<PrivateRoute
+							path={PAGE_LIST}
+							component={GearListPage}/>
+						<PrivateRoute
+							path={PAGE_ADD}
+							component={AddGearPage}/>
+						<PrivateRoute
+							path={PAGE_EDIT_PATH}
+							component={EditGearPage}
+						/>
+						<Route path="*" component={PageNotFound}/>
 					</Switch>
 				</ErrorBoundary>
 				<Footer/>
 			</div>
-		</Router>);
+		);
 	}
 }
 
