@@ -29,9 +29,6 @@ class EditGearPage extends Component {
 		const userId = localStorage.getItem(USER_AUTH_KEY);
 		const {gearId} = this.props.match.params;
 
-		console.log("userId", userId);
-		console.log("props.match", this.props.match);
-
 		if (!gearId) {
 			throw new Error("Gear item ID not provided.");
 		}
@@ -98,7 +95,7 @@ class EditGearPage extends Component {
 		.collection(COLLECTION_GEAR_ITEMS).doc(values.id)
 		.update(values)
 		.catch(error => {
-			console.log("Error Code:", error.code);
+			console.error("Error Code:", error.code);
 			let errorMessage = "Error updating gear.";
 			switch (error.code) {
 				case "not-found":
@@ -144,7 +141,7 @@ EditGearPage.propTypes = {
 	history: PropTypes.object.isRequired,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
-			key: PropTypes.string.isRequired
+			key: PropTypes.string
 		})
 	}),
 	success: PropTypes.bool.isRequired

@@ -92,5 +92,5 @@ GearTagsField.propTypes = {
 	label: PropTypes.string.isRequired,
 	onBlur: PropTypes.func,
 	onChange: PropTypes.func,
-	touched: PropTypes.func
+	touched: PropTypes.object
 };
